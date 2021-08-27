@@ -1,0 +1,19 @@
+{
+  "launch": {
+    "configurations": [],
+    "compounds": []
+  },
+  "window.zoomLevel": 1,
+  "workbench.colorTheme": "Material Theme",
+  "workbench.iconTheme": "eq-material-theme-icons",
+  "tabnine.experimentalAutoImoirts": true,
+  "[javascript]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "json.schemas": [],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.semi": true,
+  "prettier.printWidth": 60,
+  "prettier.trailingComma": "es5"
+}
