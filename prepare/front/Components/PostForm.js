@@ -1,30 +1,36 @@
 import React, {
   useCallback,
-  useState,
   useRef,
-} from "react";
-import { Button, Form, Input } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { addPost } from "../reducers/post";
+  useEffect,
+} from 'react';
+import { Button, Form, Input } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { addPost } from '../reducers/post';
+import useInput from '../hooks/useInput';
 
 const PostForm = () => {
-  const { imagePaths } = useSelector((state) => state.post);
+  const { imagePaths, addPostDone, addPostLoading } =
+    useSelector((state) => state.post);
   const dispatch = useDispatch();
-  const imageInput = useRef();
-  const [text, setText] = useState("");
-  const onChangeText = useCallback((e) => {
-    setText(e.target.value);
-  });
+  const [text, onChangeText, setText] = useInput('');
+
+  useEffect(() => {
+    if (addPostDone) {
+      setText('');
+    }
+  }, [addPostDone]);
+
   const onSubmit = useCallback(() => {
-    dispatch(addPost);
-    setText("");
-  }, []);
+    dispatch(addPost(text));
+  }, [text]);
+
+  const imageInput = useRef();
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click();
   }, [imageInput.current]);
   return (
     <Form
-      style={{ margin: "10px 0 20px" }}
+      style={{ margin: '10px 0 20px' }}
       encType="multipart/form-data"
       onFinish={onSubmit}
     >
@@ -46,18 +52,19 @@ const PostForm = () => {
         </Button>
         <Button
           type="primary"
-          style={{ float: "right" }}
+          style={{ float: 'right' }}
           htmlType="submit"
+          loading={addPostLoading}
         >
           짹짹
         </Button>
       </div>
       <div>
         {imagePaths.map((v) => (
-          <div key={v} style={{ display: "inline-block" }}>
+          <div key={v} style={{ display: 'inline-block' }}>
             <img
               src={v}
-              style={{ width: "200px" }}
+              style={{ width: '200px' }}
               alt={v}
             />
             <div>

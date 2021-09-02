@@ -1,11 +1,11 @@
-import React, { useMemo } from "react";
-import { Form, Input } from "antd";
+import React, { useMemo } from 'react';
+import { Form, Input } from 'antd';
 
 const NickNameEditForm = () => {
   const style = useMemo(() => ({
-    marginBottom: "20px",
-    border: "1px solid #d9d9d9",
-    padding: "30ps",
+    marginBottom: '20px',
+    border: '1px solid #d9d9d9',
+    padding: '30ps',
   }));
 
   return (
