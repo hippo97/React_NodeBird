@@ -1,61 +1,53 @@
 import shortId from 'shortid';
 import produce from 'immer';
-import { DashboardFilled } from '@ant-design/icons';
+import faker from 'faker';
 
 export const initialState = {
-  mainPosts: [
-    {
-      id: 1,
-      User: {
-        id: 1,
-        nickname: 'hippo',
-      },
-      content: '첫 번째 게시글 #해시태그 #익스프레스',
-      Images: [
-        {
-          id: shortId.generate(),
-          src: 'https://cdn.pixabay.com/photo/2021/08/22/12/24/mountains-6564997_960_720.jpg',
-        },
-        {
-          id: shortId.generate(),
-          src: 'https://cdn.pixabay.com/photo/2021/07/28/19/28/bee-6503344_960_720.jpg',
-        },
-        {
-          id: shortId.generate(),
-          src: 'https://cdn.pixabay.com/photo/2021/08/22/15/39/kid-6565461_960_720.jpg',
-        },
-      ],
-      Comments: [
-        {
-          id: shortId.generate(),
-          User: {
-            id: shortId.generate(),
-            nickname: 'Doch',
-          },
-          content: '첫 댓글',
-        },
-        {
-          id: shortId.generate(),
-          User: {
-            id: shortId.generate(),
-            nickname: 'Peer',
-          },
-          content: '두번째 댓글',
-        },
-      ],
-    },
-  ],
+  mainPosts: [],
   imagePaths: [],
+  hasMorePosts: true, // 초기 데이터는 무조건 가져오게 true로 세팅함
+  loadPostsLoading: false,
+  loadPostsDone: false,
+  loadPostsError: null,
   addPostLoading: false,
   addPostDone: false,
-  removePostError: null,
+  addPostError: null,
   removePostLoading: false,
   removePostDone: false,
-  addPostError: null,
+  removePostError: null,
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
 };
+
+export const generateDummyPost = (number) =>
+  Array(number)
+    .fill()
+    .map(() => ({
+      id: shortId.generate(),
+      User: {
+        id: shortId.generate(),
+        nickname: faker.name.findName(),
+      },
+      content: faker.lorem.paragraph(),
+      Images: [
+        {
+          src: faker.image.image(),
+        },
+      ],
+      Comments: [
+        {
+          User: {
+            id: shortId.generate(),
+            nickname: faker.name.findName(),
+          },
+          content: faker.lorem.sentence(),
+        },
+      ],
+    }));
+export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
+export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
+export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
@@ -80,12 +72,12 @@ export const addComment = (data) => ({
 });
 
 const dummyPost = (data) => ({
-  id: shortId.generate(),
+  id: data.id,
+  content: data.content,
   User: {
-    id: shortId.generate(),
+    id: 1,
     nickname: 'kokoa',
   },
-  content: data,
   Images: [],
   Comments: [],
 });
@@ -104,14 +96,31 @@ const reducer = (state = initialState, action) => {
   //produce는 불변성 지킬 필요 없음 알아서 해줌
   return produce(state, (draft) => {
     switch (action.type) {
+      case LOAD_POSTS_REQUEST:
+        draft.loadPostsLoading = true;
+        draft.loadPostsDone = false;
+        draft.loadPostsError = null;
+        break;
+      case LOAD_POSTS_SUCCESS:
+        draft.loadPostsLoading = false;
+        draft.loadPostsDone = true;
+        draft.mainPosts = action.data.concat(
+          draft.mainPosts
+        );
+        draft.hasMorePosts = draft.mainPosts.length < 50; // 50개만 데이터를 보겠다는 뜻
+        break;
+      case LOAD_POSTS_FAILURE:
+        draft.loadPostsLoading = false;
+        draft.loadPostsError = action.error;
+        break;
       case ADD_POST_REQUEST:
         draft.addPostLoading = true;
         draft.addPostDone = false;
         draft.addPostError = null;
         break;
       case ADD_POST_SUCCESS:
-        draft.addPostLoading = true;
-        draft.addPostDone = false;
+        draft.addPostLoading = false;
+        draft.addPostDone = true;
         draft.mainPosts.unshift(dummyPost(action.data));
         break;
       case ADD_POST_FAILURE:

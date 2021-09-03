@@ -4,8 +4,8 @@ import {
   fork,
   put,
   takeLatest,
-} from "redux-saga/effects";
-import axios from "axios";
+} from 'redux-saga/effects';
+import axios from 'axios';
 import {
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
@@ -16,10 +16,16 @@ import {
   SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
   SIGN_UP_FAILURE,
-} from "../reducers/user";
+  FOLLOW_REQUEST,
+  UNFOLLOW_REQUEST,
+  FOLLOW_SUCCESS,
+  FOLLOW_FAILURE,
+  UNFOLLOW_SUCCESS,
+  UNFOLLOW_FAILURE,
+} from '../reducers/user';
 
 function logInAPI(data) {
-  return axios.post("/api/login", data);
+  return axios.post('/api/login', data);
 }
 
 function* logIn(action) {
@@ -39,7 +45,7 @@ function* logIn(action) {
 }
 
 function logOutAPI() {
-  return axios.post("/api/logout");
+  return axios.post('/api/logout');
 }
 
 function* logOut() {
@@ -60,7 +66,7 @@ function* logOut() {
 
 //signUP api는 generator가 아님
 function signUpAPI(data) {
-  return axios.post("/api/signUp");
+  return axios.post('/api/signUp');
 }
 
 function* signUp() {
@@ -79,6 +85,45 @@ function* signUp() {
   }
 }
 
+function followAPI(data) {
+  return axios.post('/api/follow');
+}
+
+function* follow(action) {
+  try {
+    //const result = yield call(signUpAPI);
+    yield delay(1000); //1초
+    yield put({
+      type: FOLLOW_SUCCESS,
+      data: action.data,
+    });
+  } catch (err) {
+    yield put({
+      type: FOLLOW_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function unfollowAPI(data) {
+  return axios.post('/api/unfollow');
+}
+
+function* unfollow(action) {
+  try {
+    //const result = yield call(signUpAPI);
+    yield delay(1000); //1초
+    yield put({
+      type: UNFOLLOW_SUCCESS,
+      data: action.data,
+    });
+  } catch (err) {
+    yield put({
+      type: UNFOLLOW_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
@@ -91,10 +136,20 @@ function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
+function* watchFollow() {
+  yield takeLatest(FOLLOW_REQUEST, follow);
+}
+
+function* watchUnfollow() {
+  yield takeLatest(UNFOLLOW_REQUEST, unfollow);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchLogIn),
     fork(watchLogOut),
     fork(watchSignUp),
+    fork(watchFollow),
+    fork(watchUnfollow),
   ]);
 }
