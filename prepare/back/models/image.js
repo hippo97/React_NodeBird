@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       charset: 'utf8', // 이미지는 이모티콘 안넣을거니까 mb4뺌
-      collate: 'utr8_general_ci', // 이미지 저장
+      collate: 'utf8_general_ci', // 이미지 저장
     }
   );
   Image.associate = (db) => {

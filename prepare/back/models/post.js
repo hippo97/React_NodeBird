@@ -11,12 +11,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       charset: 'utf8mb4', // 이모티콘까지 넣고싶다면 mb4를 붙여줌
-      collate: 'utr8mb4_general_ci', // 이모티콘 저장
+      collate: 'utf8mb4_general_ci', // 이모티콘 저장
     }
   );
   Post.associate = (db) => {
     db.Post.belongsTo(db.User); // 어떤 게시글은 작성자에게 속함
-    db.Post.belongsToMany(db.Hashtag);
+    db.Post.belongsToMany(db.Hashtag, {
+      through: 'PostHashtag',
+    });
     db.Post.hasMany(db.Comment);
     db.Post.hasMany(db.Image);
     db.Post.belongsToMany(db.User, {
