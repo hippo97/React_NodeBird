@@ -2,15 +2,53 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 
-const { User } = require('../models');
+const { User, Post } = require('../models');
+const {
+  isLoggedIn,
+  isNotLoggedIn,
+} = require('./middlewares');
 
 const router = express.Router();
 
-router.post('/login', (req, res, next) => {
+router.get('/', async (req, res, next) => {
+  // GET /user
+  try {
+    if (req.user) {
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: req.user.id },
+        attributes: { exclude: ['password'] },
+        include: [
+          {
+            model: Post,
+            attributes: ['id'],
+          },
+          {
+            model: User,
+            as: 'Followings',
+            attributes: ['id'],
+          },
+          {
+            model: User,
+            as: 'Followers',
+            attributes: ['id'],
+          },
+        ],
+      });
+      res.status(200).json(fullUserWithoutPassword); // 사용자가 있다면 가져오고
+    } else {
+      res.status(200).json(null); // 없다면 null을 가져옴
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.error(error);
-      next(error);
+      return next(error);
     }
     if (info) {
       return res.status(401).send(info.reason);
@@ -20,18 +58,38 @@ router.post('/login', (req, res, next) => {
         console.error(loginErr);
         return next(loginErr);
       }
-      return res.status(200).json(user);
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: user.id },
+        attributes: { exclude: ['password'] },
+        include: [
+          {
+            model: Post,
+            attributes: ['id'],
+          },
+          {
+            model: User,
+            as: 'Followings',
+            attributes: ['id'],
+          },
+          {
+            model: User,
+            as: 'Followers',
+            attributes: ['id'],
+          },
+        ],
+      });
+      return res.status(200).json(fullUserWithoutPassword);
     });
   })(req, res, next);
 });
 
-router.post('/user/logout', (req, res, next) => {
+router.post('/logout', isLoggedIn, (req, res, next) => {
   req.logout();
   req.session.destroy();
   res.send('ok');
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', isNotLoggedIn, async (req, res, next) => {
   // POST /user/
 
   try {

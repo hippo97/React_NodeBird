@@ -71,26 +71,6 @@ export const addComment = (data) => ({
   data,
 });
 
-const dummyPost = (data) => ({
-  id: data.id,
-  content: data.content,
-  User: {
-    id: 1,
-    nickname: 'kokoa',
-  },
-  Images: [],
-  Comments: [],
-});
-
-const dummyComment = (data) => ({
-  id: shortId.generate(),
-  content: data,
-  User: {
-    id: 1,
-    nickname: 'kokoa',
-  },
-});
-
 //이전상태를 액션을 통해 다음 상태로 만들어내는 함수(불변성은 지키면서)
 const reducer = (state = initialState, action) => {
   //produce는 불변성 지킬 필요 없음 알아서 해줌
@@ -121,7 +101,7 @@ const reducer = (state = initialState, action) => {
       case ADD_POST_SUCCESS:
         draft.addPostLoading = false;
         draft.addPostDone = true;
-        draft.mainPosts.unshift(dummyPost(action.data));
+        draft.mainPosts.unshift(action.data);
         break;
       case ADD_POST_FAILURE:
         draft.addPostLoading = false;
@@ -150,11 +130,9 @@ const reducer = (state = initialState, action) => {
         break;
       case ADD_COMMENT_SUCCESS:
         const post = draft.mainPosts.find(
-          (v) => v.id === action.data.postId
+          (v) => v.id === action.data.PostId
         );
-        post.Comments.unshift(
-          dummyComment(action.data.content)
-        );
+        post.Comments.unshift(action.data);
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;

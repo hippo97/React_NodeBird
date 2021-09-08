@@ -12,7 +12,6 @@ import AppLayout from '../Components/AppLayout';
 import useInput from '../hooks/useInput';
 import { SIGN_UP_REQUEST } from '../reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
-import router from '../../back/routes/post';
 
 const ErrorMessage = styled.div`
   color: red;
@@ -20,12 +19,18 @@ const ErrorMessage = styled.div`
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const { signUpLoading, signUpDone, signUpError } =
+  const { signUpLoading, signUpDone, signUpError, me } =
     useSelector((state) => state.user);
 
   useEffect(() => {
+    if (me && me.id) {
+      Router.replace('/');
+    }
+  }, [me && me.id]);
+
+  useEffect(() => {
     if (signUpDone) {
-      Router.push('/');
+      Router.replace('/');
     }
   }, [signUpDone]);
 

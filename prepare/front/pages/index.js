@@ -4,6 +4,7 @@ import AppLayout from '../Components/AppLayout';
 import PostCard from '../Components/PostCard';
 import PostForm from '../Components/PostForm';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,12 @@ const Home = () => {
   // const mainPosts = useSelector((state) => state.post.mainPosts);처럼 해도 됨
 
   useEffect(() => {
-    dispatch({ type: LOAD_POSTS_REQUEST });
+    dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    });
+    dispatch({
+      type: LOAD_POSTS_REQUEST,
+    });
   }, []);
 
   useEffect(() => {
