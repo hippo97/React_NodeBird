@@ -45,8 +45,4 @@ const UserProfile = () => {
   );
 };
 
-UserProfile.propTypes = {
-  logOutLoading: PropTypes.elementType.isrequired,
-};
-
 export default UserProfile;
