@@ -24,6 +24,7 @@ import {
   LIKE_POST_REQUEST,
   REMOVE_POST_REQUEST,
   UNLIKE_POST_REQUEST,
+  RETWEET_REQUEST,
 } from '../reducers/post';
 import FollowButton from './FollowButton';
 
@@ -31,36 +32,56 @@ const PostCard = ({ post }) => {
   const dispatch = useDispatch();
   const [commentFormOpened, setCommentFormOpened] =
     useState(false);
-  const onLike = useCallback(() => {
-    dispatch({
-      type: LIKE_POST_REQUEST,
-      data: post.id,
-    });
-  }, []);
-  const onUnLike = useCallback(() => {
-    dispatch({
-      type: UNLIKE_POST_REQUEST,
-      data: post.id,
-    });
-  }, []);
-
-  const onToggleComment = useCallback(() => {
-    setCommentFormOpened((prev) => !prev);
-  }, []);
+  const id = me?.id; // == me && me.id
   const { me } = useSelector((state) => state.user);
   const { removePostLoading } = useSelector(
     (state) => state.post
   );
   /* == const id = useSelector( */
   /*                (state) => state.user.me?.id) */
+
+  const onLike = useCallback(() => {
+    if (!id) {
+      return alert('로그인을 해주세요.');
+    }
+    return dispatch({
+      type: LIKE_POST_REQUEST,
+      data: post.id,
+    });
+  }, [id]);
+  const onUnLike = useCallback(() => {
+    if (!id) {
+      return alert('로그인을 해주세요.');
+    }
+    return dispatch({
+      type: UNLIKE_POST_REQUEST,
+      data: post.id,
+    });
+  }, [id]);
+
+  const onToggleComment = useCallback(() => {
+    setCommentFormOpened((prev) => !prev);
+  }, []);
   const onRemovePost = useCallback(() => {
-    dispatch({
+    if (!id) {
+      return alert('로그인을 해주세요.');
+    }
+    return dispatch({
       type: REMOVE_POST_REQUEST,
+      data: post.id,
+    });
+  }, [id]);
+
+  const onRetweet = useCallback(() => {
+    if (!id) {
+      return alert('로그인을 해주세요.');
+    }
+    return dispatch({
+      type: RETWEET_REQUEST,
       data: post.id,
     });
   }, []);
 
-  const id = me?.id; // == me && me.id
   const liked = post.Likers.find((v) => v.id === id);
   return (
     <div style={{ marginBottom: 20 }}>
@@ -71,7 +92,10 @@ const PostCard = ({ post }) => {
           )
         }
         actions={[
-          <RetweetOutlined key="retweet" />,
+          <RetweetOutlined
+            key="retweet"
+            onClick={onRetweet}
+          />,
           liked ? (
             <HeartTwoTone
               twoToneColor="#eb2f96"

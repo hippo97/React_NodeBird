@@ -1,49 +1,133 @@
 const express = require('express'); //import
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
-const { Post, Image, Comment, User } = require('../models');
+const {
+  Post,
+  Image,
+  Comment,
+  User,
+  Hashtag,
+} = require('../models');
 const { isLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
-router.post('/', isLoggedIn, async (req, res) => {
-  //보기에는 저렇지만 POST /post
-  try {
-    const post = await Post.create({
-      content: req.body.content,
-      UserId: req.user.id,
-    });
-    const fullPost = await Post.findOne({
-      where: { id: post.id },
-      include: [
-        {
-          model: Image,
-        },
-        {
-          model: Comment,
-          include: [
-            {
-              model: User, //댓글 작성자
-              attributes: ['id', 'nickname'],
-            },
-          ],
-        },
-        {
-          model: User, // 게시글 작성자
-          attributes: ['id', 'nickname'],
-        },
-        {
-          model: User, //좋아요 누른사람
-          as: 'Likers',
-          attributes: ['id'],
-        },
-      ],
-    });
-    res.status(201).json(fullPost);
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
+try {
+  fs.accessSync('uploads');
+} catch (error) {
+  console.log('uploads폴더가 없어서 생성했습니다.');
+  fs.mkdirSync('uploads');
+}
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads');
+    },
+    filename(req, file, done) {
+      // 파일 중복을 방지하기 위한 처리
+      const ext = path.extname(file.originalname); // 확장자 추출
+      const basename = path.basename(
+        file.originalname,
+        ext
+      ); //파일이름 추출
+      done(
+        null,
+        basename + '_' + new Date().getTime() + ext
+      ); // 파일이름날짜시간.확장자
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20메가로 제한
 });
+
+router.post(
+  '/',
+  isLoggedIn,
+  upload.none(),
+  async (req, res, next) => {
+    //보기에는 저렇지만 POST /post
+    try {
+      const hashtags = Array.from(
+        new Set(req.body.content.match(/#[^\s#]+/g))
+      );
+      const post = await Post.create({
+        content: req.body.content,
+        UserId: req.user.id,
+      });
+      if (hashtags) {
+        const result = await Promise.all(
+          hashtags.map((tag) =>
+            Hashtag.findOrCreate({
+              where: { name: tag.slice(1).toLowerCase() },
+            })
+          )
+        ); //findOrCreate의 결과는 [[해시태그1, true], [해시태그2, true]] 이런 모양이라서
+        await post.addHashtags(result.map((v) => v[0])); // [0]째 인덱스를 참조하는 것
+      }
+      if (req.body.image) {
+        if (Array.isArray(req.body.image)) {
+          // 이미지를 여러 개 올리면 image: [1.jpg, 2.jpg]
+          const images = await Promise.all(
+            req.body.image.map((image) =>
+              Image.create({ src: image })
+            )
+          );
+          await post.addImages(images);
+        } else {
+          // 이미지를 하나만 올리면 image: 1.jpg
+          const image = await Image.create({
+            src: req.body.image,
+          });
+          await post.addImages(image);
+        }
+      }
+      const fullPost = await Post.findOne({
+        where: { id: post.id },
+        include: [
+          {
+            model: Image,
+          },
+          {
+            model: Comment,
+            include: [
+              {
+                model: User, //댓글 작성자
+                attributes: ['id', 'nickname'],
+              },
+            ],
+          },
+          {
+            model: User, // 게시글 작성자
+            attributes: ['id', 'nickname'],
+          },
+          {
+            model: User, //좋아요 누른사람
+            as: 'Likers',
+            attributes: ['id'],
+          },
+        ],
+      });
+      res.status(201).json(fullPost);
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  }
+);
+
+router.post(
+  '/images',
+  isLoggedIn,
+  upload.array('image'), // 한장만 쓸거면 single쓰면 됨
+  async (req, res, next) => {
+    // POST /post/images
+
+    console.log(req.files);
+    res.json(req.files.map((v) => v.filename));
+  }
+);
 
 router.post(
   '/:postId/comment',
