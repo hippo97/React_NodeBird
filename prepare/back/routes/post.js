@@ -167,6 +167,56 @@ router.post(
   }
 );
 
+router.post(
+  '/:postId/retweet',
+  isLoggedIn,
+  async (req, res) => {
+    //보기에는 저렇지만 POST /post/postId(동적으로 바뀌는 부분)/comment
+    try {
+      const post = await Post.findOne({
+        where: { id: req.params.postId },
+        include: [
+          {
+            model: Post,
+            as: 'Retweet',
+          },
+        ],
+      });
+
+      if (!post) {
+        return res
+          .status(403)
+          .send('존재하지 않는 게시글입니다.');
+      }
+
+      if (
+        req.user.id === post.UserId ||
+        (post.Retweet &&
+          post.Retweet.UserId === req.user.id)
+      ) {
+        return res
+          .status(403)
+          .send('자신의 글은 리트윗 할 수 없습니다.');
+      }
+
+      const retweetTargetId = post.RetweetId || post.id;
+      const exPost = await Post.findOne({
+        where: {
+          UserId: req.user.id,
+          RetweetId: retweetTargetId,
+        },
+      });
+      if (exPost) {
+        return res.status(403).send('이미 리트윗했습니다.');
+      }
+      res.status(201).json(fullComment);
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  }
+);
+
 router.patch(
   '/:postId/like',
   isLoggedIn,
