@@ -6,7 +6,11 @@ import {
   Comment,
   List,
 } from 'antd';
-import React, { useState, useCallback } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+} from 'react';
 import PropTypes from 'prop-types';
 import {
   EllipsisOutlined,
@@ -133,15 +137,46 @@ const PostCard = ({ post }) => {
             <EllipsisOutlined />
           </Popover>,
         ]}
+        title={
+          post.RetweetId
+            ? `${post.User.nickname}님이 리트윗하셨습니다.`
+            : null
+        }
         extra={id && <FollowButton post={post} />}
       >
-        <Card.Meta
-          avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
-          title={post.User.nickname}
-          description={
-            <PostCardContent postData={post.content} />
-          }
-        />
+        {post.RetweetId && post.Retweet ? (
+          <Card
+            cover={
+              post.Retweet.Images[0] && (
+                <PostImages images={post.Images} />
+              )
+            }
+          >
+            <Card.Meta
+              avatar={
+                <Avatar>
+                  {post.Retweet.User.nickname[0]}
+                </Avatar>
+              }
+              title={post.Retweet.User.nickname}
+              description={
+                <PostCardContent
+                  postData={post.Retweet.content}
+                />
+              }
+            />
+          </Card>
+        ) : (
+          <Card.Meta
+            avatar={
+              <Avatar>{post.User.nickname[0]}</Avatar>
+            }
+            title={post.User.nickname}
+            description={
+              <PostCardContent postData={post.content} />
+            }
+          />
+        )}
       </Card>
       {commentFormOpened && (
         <div>
@@ -180,6 +215,8 @@ PostCard.propTypes = {
     Comments: PropTypes.arrayOf(PropTypes.any),
     Images: PropTypes.arrayOf(PropTypes.any),
     Likers: PropTypes.arrayOf(PropTypes.object),
+    retweetId: PropTypes.number,
+    Retweet: PropTypes.objectOf(PropTypes.any),
   }).isRequired,
 };
 

@@ -9,9 +9,19 @@ import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 const Home = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { mainPosts, hasMorePosts, loadPostsLoading } =
-    useSelector((state) => state.post);
+  const {
+    mainPosts,
+    hasMorePosts,
+    loadPostsLoading,
+    retweetError,
+  } = useSelector((state) => state.post);
   // const mainPosts = useSelector((state) => state.post.mainPosts);처럼 해도 됨
+
+  useEffect(() => {
+    if (retweetError) {
+      alert(retweetError);
+    }
+  }, [retweetError]);
 
   useEffect(() => {
     dispatch({
@@ -36,7 +46,12 @@ const Home = () => {
         document.documentElement.scrollHeight - 300
       ) {
         if (hasMorePosts && !loadPostsLoading) {
-          dispatch({ type: LOAD_POSTS_REQUEST });
+          const lastId =
+            mainPosts[mainPosts.length - 1]?.id;
+          dispatch({
+            type: LOAD_POSTS_REQUEST,
+            lastId,
+          });
         }
       }
     }
@@ -46,7 +61,7 @@ const Home = () => {
       window.removeEventListener('scroll', onScroll);
       // return으로 remove해주지 않으면 메모리에 계속 쌓여있게됨
     };
-  }, [hasMorePosts, loadPostsLoading]);
+  }, [hasMorePosts, loadPostsLoading, mainPosts]);
 
   return (
     <AppLayout>

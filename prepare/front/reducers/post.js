@@ -128,10 +128,10 @@ const reducer = (state = initialState, action) => {
       case LOAD_POSTS_SUCCESS:
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
-        draft.mainPosts = action.data.concat(
-          draft.mainPosts
+        draft.mainPosts = draft.mainPosts.concat(
+          action.data
         );
-        draft.hasMorePosts = draft.mainPosts.length < 50; // 50개만 데이터를 보겠다는 뜻
+        draft.hasMorePosts = action.data.length === 10; // 50개만 데이터를 보겠다는 뜻
         break;
       case LOAD_POSTS_FAILURE:
         draft.loadPostsLoading = false;
@@ -160,6 +160,7 @@ const reducer = (state = initialState, action) => {
       case RETWEET_SUCCESS:
         draft.retweetLoading = false;
         draft.retweetDone = true;
+        draft.mainPosts.unshift(action.data);
         break;
       case RETWEET_FAILURE:
         draft.retweetLoading = false;

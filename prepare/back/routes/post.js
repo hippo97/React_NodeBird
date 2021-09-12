@@ -209,7 +209,46 @@ router.post(
       if (exPost) {
         return res.status(403).send('이미 리트윗했습니다.');
       }
-      res.status(201).json(fullComment);
+      const retweet = await Post.create({
+        UserId: req.user.id,
+        RetweetId: retweetTargetId,
+        content: 'retweet',
+      });
+      const retweetWithPrevPost = await Post.findOne({
+        where: { id: retweet.id },
+        include: [
+          {
+            model: Post,
+            as: 'Retweet',
+            include: [
+              {
+                model: User,
+                attributes: ['id', 'nickname'],
+              },
+              {
+                model: Image,
+              },
+            ],
+          },
+          {
+            model: User,
+            attributes: ['id', 'nickname'],
+          },
+          {
+            model: Image,
+          },
+          {
+            model: Comment,
+            include: [
+              {
+                model: User,
+                attributes: ['id', 'nickname'],
+              },
+            ],
+          },
+        ],
+      });
+      res.status(201).json(retweetWithPrevPost);
     } catch (error) {
       console.error(error);
       next(error);
