@@ -36,8 +36,8 @@ const PostCard = ({ post }) => {
   const dispatch = useDispatch();
   const [commentFormOpened, setCommentFormOpened] =
     useState(false);
-  const id = me?.id; // == me && me.id
   const { me } = useSelector((state) => state.user);
+  const id = me?.id; // == me && me.id
   const { removePostLoading } = useSelector(
     (state) => state.post
   );
@@ -148,7 +148,7 @@ const PostCard = ({ post }) => {
           <Card
             cover={
               post.Retweet.Images[0] && (
-                <PostImages images={post.Images} />
+                <PostImages images={post.Retweet.Images} />
               )
             }
           >

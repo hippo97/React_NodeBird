@@ -2,7 +2,8 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 
-const { User, Post } = require('../models');
+const { Op } = require('sequelize');
+const { User, Post, Image, Comment } = require('../models');
 const {
   isLoggedIn,
   isNotLoggedIn,
@@ -38,6 +39,106 @@ router.get('/', async (req, res, next) => {
     } else {
       res.status(200).json(null); // 없다면 null을 가져옴
     }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.get('/:userId', async (req, res, next) => {
+  // GET /user
+  try {
+    const fullUserWithoutPassword = await User.findOne({
+      where: { id: req.params.userId },
+      attributes: { exclude: ['password'] },
+      include: [
+        {
+          model: Post,
+          attributes: ['id'],
+        },
+        {
+          model: User,
+          as: 'Followings',
+          attributes: ['id'],
+        },
+        {
+          model: User,
+          as: 'Followers',
+          attributes: ['id'],
+        },
+      ],
+    });
+
+    if (fullUserWithoutPassword) {
+      const data = fullUserWithoutPassword.toJSON();
+      data.Posts = data.Posts.length; // 개인정보 보호 차원
+      data.Followers = data.Followers.length;
+      data.Followings = data.Followings.length;
+      res.status(200).json(data); // 사용자가 있다면 가져오고
+    } else {
+      res.status(404).json('존재하지 않는 사용자입니다.'); // 없다면 null을 가져옴
+    }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.get('/:userId/posts', async (req, res, next) => {
+  // GET /user/1/posts
+  try {
+    const where = { UserId: req.params.userId };
+    if (parseInt(req.query.lastId, 10)) {
+      // 초기 로딩이 아닐 때
+      where.id = {
+        [Op.lt]: parseInt(req.query.lastId, 10),
+      };
+    }
+    const posts = await Post.findAll({
+      where,
+      limit: 10,
+      order: [
+        ['createdAt', 'DESC'],
+        [Comment, 'createdAt', 'DESC'],
+      ],
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'nickname'],
+        },
+        {
+          model: Image,
+        },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+            },
+          ],
+        },
+        {
+          model: User, //좋아요 누른사람
+          as: 'Likers',
+          attributes: ['id'],
+        },
+        {
+          model: Post,
+          as: 'Retweet',
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+            },
+            {
+              model: Image,
+            },
+          ],
+        },
+      ],
+    });
+    res.status(200).json(posts);
   } catch (error) {
     console.error(error);
     next(error);

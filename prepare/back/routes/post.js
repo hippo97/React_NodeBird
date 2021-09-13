@@ -124,7 +124,7 @@ router.post(
   async (req, res, next) => {
     // POST /post/images
 
-    console.log(req.files);
+    //console.log(req.files);
     res.json(req.files.map((v) => v.filename));
   }
 );
@@ -170,8 +170,8 @@ router.post(
 router.post(
   '/:postId/retweet',
   isLoggedIn,
-  async (req, res) => {
-    //보기에는 저렇지만 POST /post/postId(동적으로 바뀌는 부분)/comment
+  async (req, res, next) => {
+    // POST /post/1/retweet
     try {
       const post = await Post.findOne({
         where: { id: req.params.postId },
@@ -235,6 +235,11 @@ router.post(
             attributes: ['id', 'nickname'],
           },
           {
+            model: User, // 좋아요 누른 사람
+            as: 'Likers',
+            attributes: ['id'],
+          },
+          {
             model: Image,
           },
           {
@@ -255,6 +260,44 @@ router.post(
     }
   }
 );
+
+router.get('/:postId', async (req, res, next) => {
+  // GET /post/1
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.postId },
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'nickname'],
+        },
+        {
+          model: Image,
+        },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+              order: [['createdAt', 'DESC']],
+            },
+          ],
+        },
+        {
+          model: User, //좋아요 누른 사람
+          as: 'Likers',
+          attributes: ['id'],
+        },
+      ],
+    });
+
+    res.status(200).json(post);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
 
 router.patch(
   '/:postId/like',
