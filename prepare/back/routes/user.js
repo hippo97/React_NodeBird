@@ -45,6 +45,57 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.get(
+  '/followers',
+  isLoggedIn,
+  async (req, res, next) => {
+    // GET /user/followers
+    try {
+      const user = await User.findOne({
+        where: { id: req.user.id },
+      });
+      if (!user) {
+        res
+          .status(403)
+          .send('존재하지 않는 사람입니다(팔로우 실패).');
+      }
+      const followers = await user.getFollowers({
+        limit: req.query.limit,
+      });
+      res.status(200).json(followers);
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  }
+);
+
+router.get(
+  '/followings',
+  isLoggedIn,
+  async (req, res, next) => {
+    // GET /user/followings
+    try {
+      const user = await User.findOne({
+        where: { id: req.user.id },
+      });
+      if (!user) {
+        res
+          .status(403)
+          .send('존재하지 않는 사람입니다(팔로우 실패).');
+      }
+
+      const followings = await user.getFollowings({
+        limit: req.query.limit,
+      });
+      res.status(200).json(followings);
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  }
+);
+
 router.get('/:userId', async (req, res, next) => {
   // GET /user
   try {
@@ -317,53 +368,6 @@ router.delete(
       res
         .status(200)
         .json({ UserId: parseInt(req.params.userId, 10) });
-    } catch (error) {
-      console.error(error);
-      next(error);
-    }
-  }
-);
-
-router.get(
-  '/followers',
-  isLoggedIn,
-  async (req, res, next) => {
-    // GET /user/followers
-    try {
-      const user = await User.findOne({
-        where: { id: req.user.id },
-      });
-      if (!user) {
-        res
-          .status(403)
-          .send('존재하지 않는 사람입니다(팔로우 실패).');
-      }
-      const followers = await user.getFollowers();
-      res.status(200).json(followers);
-    } catch (error) {
-      console.error(error);
-      next(error);
-    }
-  }
-);
-
-router.get(
-  '/followings',
-  isLoggedIn,
-  async (req, res, next) => {
-    // GET /user/followings
-    try {
-      const user = await User.findOne({
-        where: { id: req.user.id },
-      });
-      if (!user) {
-        res
-          .status(403)
-          .send('존재하지 않는 사람입니다(팔로우 실패).');
-      }
-
-      const followings = await user.getFollowings();
-      res.status(200).json(followings);
     } catch (error) {
       console.error(error);
       next(error);

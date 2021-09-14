@@ -149,9 +149,9 @@ const reducer = (state = initialState, action) => {
         draft.loadPostsDone = false;
         draft.loadPostsError = null;
         break;
-      case LOAD_USER_POSTS_REQUEST:
-      case LOAD_HASHTAG_POSTS_REQUEST:
-      case LOAD_POSTS_REQUEST:
+      case LOAD_USER_POSTS_SUCCESS:
+      case LOAD_HASHTAG_POSTS_SUCCESS:
+      case LOAD_POSTS_SUCCESS:
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
         draft.mainPosts = draft.mainPosts.concat(
@@ -159,9 +159,9 @@ const reducer = (state = initialState, action) => {
         );
         draft.hasMorePosts = action.data.length === 10; // 50개만 데이터를 보겠다는 뜻
         break;
-      case LOAD_USER_POSTS_REQUEST:
-      case LOAD_HASHTAG_POSTS_REQUEST:
-      case LOAD_POSTS_REQUEST:
+      case LOAD_USER_POSTS_FAILURE:
+      case LOAD_HASHTAG_POSTS_FAILURE:
+      case LOAD_POSTS_FAILURE:
         draft.loadPostsLoading = false;
         draft.loadPostsError = action.error;
         break;

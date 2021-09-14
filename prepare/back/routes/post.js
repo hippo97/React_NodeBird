@@ -291,7 +291,6 @@ router.get('/:postId', async (req, res, next) => {
         },
       ],
     });
-
     res.status(200).json(post);
   } catch (error) {
     console.error(error);

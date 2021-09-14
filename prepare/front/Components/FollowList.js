@@ -8,7 +8,12 @@ import {
 } from '../reducers/user';
 import { useDispatch } from 'react-redux';
 
-const FollowList = ({ header, data }) => {
+const FollowList = ({
+  header,
+  data,
+  onClickMore,
+  loading,
+}) => {
   const dispatch = useDispatch();
   const onCancel = (id) => () => {
     if (header === '팔로잉') {
@@ -36,7 +41,9 @@ const FollowList = ({ header, data }) => {
             margin: '10px 0',
           }}
         >
-          <Button>더 보기</Button>
+          <Button onClick={onClickMore} loading={loading}>
+            더 보기
+          </Button>
         </div>
       }
       bordered
@@ -62,6 +69,8 @@ const FollowList = ({ header, data }) => {
 FollowList.propTypes = {
   header: PropTypes.string.isRequired,
   data: PropTypes.array.isRequired,
+  onClickMore: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default FollowList;

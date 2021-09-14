@@ -149,6 +149,7 @@ function* loadPosts(action) {
     });
     console.log(action.data);
   } catch (err) {
+    console.error(err);
     yield put({
       type: LOAD_POSTS_FAILURE,
       error: err.response.data,
@@ -175,6 +176,7 @@ function* loadUserPosts(action) {
     });
     //console.log(action.data);
   } catch (err) {
+    console.error(err);
     yield put({
       type: LOAD_USER_POSTS_FAILURE,
       error: err.response.data,
@@ -184,7 +186,9 @@ function* loadUserPosts(action) {
 
 function loadHashtagPostsAPI(data, lastId) {
   return axios.get(
-    `/hashtag/${data}?lastId=${lastId || 0}`
+    `/hashtag/${encodeURIComponent(data)}?lastId=${
+      lastId || 0
+    }`
   );
 }
 
@@ -201,9 +205,10 @@ function* loadHashtagPosts(action) {
     });
     //console.log(action.data);
   } catch (err) {
+    console.error(err);
     yield put({
       type: LOAD_HASHTAG_POSTS_FAILURE,
-      error: err.response.data,
+      data: err.response.data,
     });
   }
 }
@@ -219,7 +224,6 @@ function* loadPost(action) {
       type: LOAD_POST_SUCCESS,
       data: result.data,
     });
-    //console.log(action.data);
   } catch (err) {
     yield put({
       type: LOAD_POST_FAILURE,

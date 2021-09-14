@@ -8,7 +8,7 @@ import Head from 'next/head';
 
 import { LOAD_MY_INFO_REQUEST } from '../../reducers/user';
 import wrapper from '../../store/configureStore';
-import { LOAD_POSTS_REQUEST } from '../../reducers/post';
+import { LOAD_POST_REQUEST } from '../../reducers/post';
 import AppLayout from '../../Components/AppLayout';
 import PostCard from '../../Components/PostCard';
 
@@ -16,7 +16,6 @@ const Post = () => {
   const router = useRouter();
   const { id } = router.query;
   const { singlePost } = useSelector((state) => state.post);
-
   return (
     <AppLayout>
       <Head>
@@ -69,7 +68,7 @@ export const getServerSideProps =
       type: LOAD_MY_INFO_REQUEST,
     });
     context.store.dispatch({
-      type: LOAD_POSTS_REQUEST,
+      type: LOAD_POST_REQUEST,
       data: context.params.id,
     });
     context.store.dispatch(END);

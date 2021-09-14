@@ -1,4 +1,4 @@
-import produce from 'immer';
+import produce from '../util/produce';
 
 export const initialState = {
   loadMyInfoLoading: false, // 로그인 정보 받아오는 중
