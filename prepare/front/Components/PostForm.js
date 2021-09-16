@@ -26,7 +26,7 @@ const PostForm = () => {
 
   const onSubmit = useCallback(() => {
     if (!text || !text.trim()) {
-      return alert('게시를을 작성하세요.');
+      return alert('게시글을 작성하세요.');
     }
 
     const formData = new FormData();

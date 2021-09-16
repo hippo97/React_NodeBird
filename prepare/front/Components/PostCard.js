@@ -90,11 +90,6 @@ const PostCard = ({ post }) => {
   return (
     <div style={{ marginBottom: 20 }}>
       <Card
-        cover={
-          post.Images[0] && (
-            <PostImages images={post.Images} />
-          )
-        }
         actions={[
           <RetweetOutlined
             key="retweet"
@@ -145,13 +140,7 @@ const PostCard = ({ post }) => {
         extra={id && <FollowButton post={post} />}
       >
         {post.RetweetId && post.Retweet ? (
-          <Card
-            cover={
-              post.Retweet.Images[0] && (
-                <PostImages images={post.Retweet.Images} />
-              )
-            }
-          >
+          <Card>
             <div style={{ float: 'right' }}>
               {moment(post.createdAt).format('YYYY.MM.DD')}
             </div>
@@ -169,9 +158,16 @@ const PostCard = ({ post }) => {
               }
               title={post.Retweet.User.nickname}
               description={
-                <PostCardContent
-                  postData={post.Retweet.content}
-                />
+                <>
+                  {post.Retweet.Images[0] && (
+                    <PostImages
+                      images={post.Retweet.Images}
+                    />
+                  )}
+                  <PostCardContent
+                    postData={post.Retweet.content}
+                  />
+                </>
               }
             />
           </Card>
@@ -190,7 +186,14 @@ const PostCard = ({ post }) => {
               }
               title={post.User.nickname}
               description={
-                <PostCardContent postData={post.content} />
+                <>
+                  {post.Images[0] && (
+                    <PostImages images={post.Images} />
+                  )}
+                  <PostCardContent
+                    postData={post.content}
+                  />
+                </>
               }
             />
           </>

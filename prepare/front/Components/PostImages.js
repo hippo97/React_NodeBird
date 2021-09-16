@@ -21,6 +21,7 @@ const PostImages = ({ images }) => {
           src={`http://localhost:3065/${images[0].src}`}
           alt={images[0].src}
           onClick={onZoom}
+          style={{ width: '270px', height: '270px' }}
         />
         {showImagesZoom && (
           <ImagesZoom images={images} onClose={onClose} />
@@ -34,14 +35,22 @@ const PostImages = ({ images }) => {
       <>
         <img
           role="presentation"
-          style={{ width: '50%', display: 'inline-block' }}
+          style={{
+            width: '270px',
+            height: '270px',
+            display: 'inline-block',
+          }}
           src={`http://localhost:3065/${images[0].src}`}
           alt={images[0].src}
           onClick={onZoom}
         />
         <img
           role="presentation"
-          style={{ width: '50%', display: 'inline-block' }}
+          style={{
+            width: '270px',
+            height: '270px',
+            display: 'inline-block',
+          }}
           src={`http://localhost:3065/${images[1].src}`}
           alt={images[1].src}
           onClick={onZoom}
@@ -57,7 +66,7 @@ const PostImages = ({ images }) => {
       <div>
         <img
           role="presentation"
-          style={{ width: '50%' }}
+          style={{ width: '250px', height: '300px' }}
           src={`http://localhost:3065/${images[0].src}`}
           alt={images[0].src}
           onClick={onZoom}

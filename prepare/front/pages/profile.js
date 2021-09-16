@@ -4,7 +4,7 @@ import React, {
   useState,
 } from 'react';
 import Head from 'next/head';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Router from 'next/router';
 import { END } from 'redux-saga';
 import axios from 'axios';
