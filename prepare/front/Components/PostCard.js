@@ -18,6 +18,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import moment from 'moment';
+import styled from 'styled-components';
 
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
@@ -32,15 +33,18 @@ import FollowButton from './FollowButton';
 
 moment.locale('ko');
 
+const LinkItem = styled.a`
+  color: black;
+`;
+
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
   const [commentFormOpened, setCommentFormOpened] =
     useState(false);
   const { me } = useSelector((state) => state.user);
   const id = me?.id; // == me && me.id
-  const { removePostLoading } = useSelector(
-    (state) => state.post
-  );
+  const { loadPostLoading, removePostLoading } =
+    useSelector((state) => state.post);
   /* == const id = useSelector( */
   /*                (state) => state.user.me?.id) */
 
@@ -90,6 +94,7 @@ const PostCard = ({ post }) => {
   return (
     <div style={{ marginBottom: 20 }}>
       <Card
+        loading={loadPostLoading}
         actions={[
           <RetweetOutlined
             key="retweet"
@@ -114,7 +119,11 @@ const PostCard = ({ post }) => {
               <Button.Group>
                 {id && post.User.id === id ? (
                   <>
-                    <Button>수정</Button>
+                    <Button>
+                      <Link href={`/editpost/${post.id}`}>
+                        <a>수정</a>
+                      </Link>
+                    </Button>
                     <Button
                       type="danger"
                       loading={removePostLoading}
@@ -149,14 +158,24 @@ const PostCard = ({ post }) => {
                 <Link
                   href={`/user/${post.Retweet.User.id}`}
                 >
-                  <a>
+                  <LinkItem>
                     <Avatar>
                       {post.Retweet.User.nickname[0]}
                     </Avatar>
-                  </a>
+                  </LinkItem>
                 </Link>
               }
-              title={post.Retweet.User.nickname}
+              title={
+                <>
+                  <Link
+                    href={`/user/${post.Retweet.User.id}`}
+                  >
+                    <LinkItem>
+                      {post.Retweet.User.nickname}
+                    </LinkItem>
+                  </Link>
+                </>
+              }
               description={
                 <>
                   {post.Retweet.Images[0] && (
@@ -179,12 +198,20 @@ const PostCard = ({ post }) => {
             <Card.Meta
               avatar={
                 <Link href={`/user/${post.User.id}`}>
-                  <a>
+                  <LinkItem>
                     <Avatar>{post.User.nickname[0]}</Avatar>
-                  </a>
+                  </LinkItem>
                 </Link>
               }
-              title={post.User.nickname}
+              title={
+                <>
+                  <Link href={`/user/${post.User.id}`}>
+                    <LinkItem>
+                      {post.User.nickname}
+                    </LinkItem>
+                  </Link>
+                </>
+              }
               description={
                 <>
                   {post.Images[0] && (
@@ -212,11 +239,11 @@ const PostCard = ({ post }) => {
                   author={item.User.nickname}
                   avatar={
                     <Link href={`/user/${item.User.id}`}>
-                      <a>
+                      <LinkItem>
                         <Avatar>
                           {item.User.nickname[0]}
                         </Avatar>
-                      </a>
+                      </LinkItem>
                     </Link>
                   }
                   content={item.content}

@@ -80,7 +80,7 @@ const AppLayout = ({ children }) => {
             target="_blank"
             rel="_noreferrer noopener"
           >
-            Made by Hippo
+            Made by Dochi
           </a>
         </Col>
       </Row>
