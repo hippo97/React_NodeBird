@@ -19,6 +19,9 @@ export const initialState = {
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
+  editPostLoading: false,
+  editPostDone: false,
+  editPostError: null,
   retweetLoading: false,
   retweetDone: false,
   retweetError: null,
@@ -67,6 +70,10 @@ export const LOAD_HASHTAG_POSTS_FAILURE =
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
+
+export const EDIT_POST_REQUEST = 'EDIT_POST_REQUEST';
+export const EDIT_POST_SUCCESS = 'EDIT_POST_SUCCESS';
+export const EDIT_POST_FAILURE = 'EDIT_POST_FAILURE';
 
 export const RETWEET_REQUEST = 'RETWEET_REQUEST';
 export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
@@ -193,6 +200,25 @@ const reducer = (state = initialState, action) => {
       case ADD_POST_FAILURE:
         draft.addPostLoading = false;
         draft.addPostError = action.error;
+        break;
+      case EDIT_POST_REQUEST:
+        draft.editPostLoading = true;
+        draft.editPostDone = false;
+        draft.editPostError = null;
+        break;
+      case EDIT_POST_SUCCESS:
+        draft.editPostLoading = false;
+        draft.editPostDone = true;
+        draft.mainPosts.find((v) => {
+          if (v.id === action.data.UserId) {
+            v = action.data;
+          }
+        });
+        draft.imagePaths = [];
+        break;
+      case EDIT_POST_FAILURE:
+        draft.editPostLoading = false;
+        draft.editPostError = action.error;
         break;
       case RETWEET_REQUEST:
         draft.retweetLoading = true;

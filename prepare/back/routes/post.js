@@ -261,6 +261,22 @@ router.post(
   }
 );
 
+router.put(
+  '/edit/:postId',
+  isLoggedIn,
+  async (req, res, next) => {
+    try {
+      const postId = parseInt(req.params.id, 10);
+      await Post.update({
+        content: req.body.content,
+      });
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+  }
+);
+
 router.get('/:postId', async (req, res, next) => {
   // GET /post/1
   try {

@@ -14,6 +14,9 @@ import {
   ADD_POST_FAILURE,
   ADD_POST_REQUEST,
   ADD_POST_SUCCESS,
+  EDIT_POST_FAILURE,
+  EDIT_POST_REQUEST,
+  EDIT_POST_SUCCESS,
   LIKE_POST_FAILURE,
   LIKE_POST_REQUEST,
   LIKE_POST_SUCCESS,
@@ -68,6 +71,27 @@ function* addPost(action) {
   } catch (err) {
     yield put({
       type: ADD_POST_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function editPostAPI(data) {
+  return axios.put(`/post/edit/${data.postId}`, data);
+}
+
+function* editPost(action) {
+  try {
+    const result = yield call(editPostAPI, action.data);
+
+    yield put({
+      type: EDIT_POST_SUCCESS,
+      data: result.data,
+    });
+    console.log(action.data);
+  } catch (err) {
+    yield put({
+      type: EDIT_POST_FAILURE,
       error: err.response.data,
     });
   }
@@ -298,6 +322,10 @@ function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, addPost);
 }
 
+function* watchEditPost() {
+  yield takeLatest(EDIT_POST_REQUEST, editPost);
+}
+
 function* watchRetweet() {
   yield takeLatest(RETWEET_REQUEST, retweet);
 }
@@ -351,6 +379,7 @@ export default function* postSaga() {
     fork(watchLikePost),
     fork(watchUnlikePost),
     fork(watchAddPost),
+    fork(watchEditPost),
     fork(watchRetweet),
     fork(watchLoadPosts),
     fork(watchLoadUserPosts),

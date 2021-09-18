@@ -44,8 +44,7 @@ const Editpost = () => {
         <title>게시글 수정 | NodeBird</title>
       </Head>
       <AppLayout>
-        <div>{id}</div>
-        <div>{postData.content}</div>
+        <EditPostForm post={postData} />
       </AppLayout>
     </>
   );

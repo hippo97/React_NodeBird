@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { END } from 'redux-saga';
+import Head from 'next/head';
 
 import axios from 'axios';
 import { LOAD_HASHTAG_POSTS_REQUEST } from '../../reducers/post';
@@ -49,11 +50,16 @@ const Hashtag = () => {
   ]);
 
   return (
-    <AppLayout>
-      {mainPosts.map((c) => (
-        <PostCard key={c.id} post={c} />
-      ))}
-    </AppLayout>
+    <>
+      <Head>
+        <title>{tag} | NodeBird</title>
+      </Head>
+      <AppLayout>
+        {mainPosts.map((c) => (
+          <PostCard key={c.id} post={c} />
+        ))}
+      </AppLayout>
+    </>
   );
 };
 
