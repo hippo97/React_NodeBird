@@ -64,6 +64,7 @@ router.post(
             })
           )
         ); //findOrCreate의 결과는 [[해시태그1, true], [해시태그2, true]] 이런 모양이라서
+
         await post.addHashtags(result.map((v) => v[0])); // [0]째 인덱스를 참조하는 것
       }
       if (req.body.image) {
@@ -267,8 +268,63 @@ router.put(
   async (req, res, next) => {
     try {
       const postId = parseInt(req.params.id, 10);
+
+      const prevPost = await Post.findOne({
+        where: { id: postId },
+      });
+
+      const prevHashtags = Array.from(
+        new Set(prevPost.content.match(/#[^\s#]+/g))
+      ); //기존 게시글의 해시태그들을 가져온다.
+
+      const newHashtags = Array.from(
+        new Set(req.body.content.match(/#[^\s#]+/g))
+      ); //새로 등록할 게시글에서 해시태그를 추출한다.
+
+      prevHashtags.map((v) => {
+        const tag = newHashtags.find(v);
+        if (!tags) {
+          Hashtag.destroy({
+            where: {
+              name: v,
+            },
+          });
+        }
+      }); //기존 게시글의 해시태그 중 모든 게시글에서 사용되지 않고 새로 등록된 게시글에도
+      // 없다면, 해당 해시태그를 데이터베이스에서 삭제
+
+      if (hashtags) {
+        const result = await Promise.all(
+          hashtags.map((tag) =>
+            Hashtag.findOrCreate({
+              where: { name: tag.slice(1).toLowerCase() },
+            })
+          )
+        );
+        await post.addHashtags(result.map((v) => v[0]));
+      } // 새로운 해시태그는 중복없이 등록
+
+      if (req.body.image) {
+        if (Array.isArray(req.body.image)) {
+          // 이미지를 여러 개 올리면 image: [1.jpg, 2.jpg]
+          const images = await Promise.all(
+            req.body.image.map((image) =>
+              Image.create({ src: image })
+            )
+          );
+          await post.addImages(images);
+        } else {
+          // 이미지를 하나만 올리면 image: 1.jpg
+          const image = await Image.create({
+            src: req.body.image,
+          });
+          await post.addImages(image);
+        }
+      } //이미지는 기존 이미지 중 새 게시글에는 없는 이미지 해시태그처럼 삭제 안함(보관)
+
       await Post.update({
         content: req.body.content,
+        UserId: req.user.id,
       });
     } catch (error) {
       console.error(error);
