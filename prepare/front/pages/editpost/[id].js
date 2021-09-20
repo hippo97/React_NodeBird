@@ -15,11 +15,11 @@ const Editpost = () => {
   const { me } = useSelector((state) => state.user);
   const router = useRouter();
   const { id } = router.query;
-  const fetcher = (url) => {
+  const fetcher = (url) =>
     axios
       .get(url, { withCredentials: true })
       .then((result) => result.data);
-  };
+
   console.log(id);
   const { data: postData, error: postError } = useSWR(
     `http://localhost:3065/post/${id}`,
@@ -36,6 +36,7 @@ const Editpost = () => {
     console.error(postError);
     return <div>로딩 중 에러가 발생했습니다.</div>;
   }
+  if (!postData) return <div>loading...</div>;
   //console.log('postData: ', postData);
   //console.log('postId: ', id);
   console.log('postData: ', postData);
