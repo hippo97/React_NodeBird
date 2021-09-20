@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import axios from 'axios';
 import useSWR from 'swr';
 import { END } from 'redux-saga';
@@ -10,16 +9,18 @@ import Head from 'next/head';
 import { LOAD_MY_INFO_REQUEST } from '../../reducers/user';
 import wrapper from '../../store/configureStore';
 import AppLayout from '../../Components/AppLayout';
+import EditPostForm from '../../Components/EditPostForm';
 
 const Editpost = () => {
   const { me } = useSelector((state) => state.user);
   const router = useRouter();
   const { id } = router.query;
-  const fetcher = (url) =>
+  const fetcher = (url) => {
     axios
       .get(url, { withCredentials: true })
       .then((result) => result.data);
-
+  };
+  console.log(id);
   const { data: postData, error: postError } = useSWR(
     `http://localhost:3065/post/${id}`,
     fetcher
@@ -37,7 +38,7 @@ const Editpost = () => {
   }
   //console.log('postData: ', postData);
   //console.log('postId: ', id);
-
+  console.log('postData: ', postData);
   return (
     <>
       <Head>
@@ -48,10 +49,6 @@ const Editpost = () => {
       </AppLayout>
     </>
   );
-};
-
-Editpost.propTypes = {
-  postId: PropTypes.number.isRequired,
 };
 
 export const getServerSideProps =

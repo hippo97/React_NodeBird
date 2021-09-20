@@ -337,7 +337,7 @@ router.get('/:postId', async (req, res, next) => {
   // GET /post/1
   try {
     const post = await Post.findOne({
-      where: { id: req.params.postId },
+      where: { id: parseInt(req.params.postId, 10) },
       include: [
         {
           model: User,

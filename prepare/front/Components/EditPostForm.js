@@ -1,17 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Form, Input, Button } from 'antd';
 
 const EditPostForm = ({ post }) => {
-    
+  return (
     <Form
       style={{ margin: '10px 0 20px' }}
       encType="multipart/form-data"
-      onFinish={onSubmit}
+      //onFinish={onSubmit}
     >
       <Input.TextArea
-            value={text}
-            onChange={onChangeText}
-            maxLength={140}
-            placeholder={ post.content}
+        //value={text}
+        //onChange={onChangeText}
+        maxLength={140}
+        placeholder={post.content}
       />
       <div>
         <input
@@ -19,17 +21,21 @@ const EditPostForm = ({ post }) => {
           name="image"
           multiple
           hidden
-          ref={imageInput}
-          onChange={onChangeImages}
+          //ref={imageInput}
+          //onChange={onChangeImages}
         />
-        <Button onClick={onClickImageUpload}>
+        <Button
+        //onClick={onClickImageUpload}
+        >
           이미지 업로드
         </Button>
         <Button
           type="primary"
           style={{ float: 'right' }}
           htmlType="submit"
-          loading={addPostLoading}
+          //</div>loading={
+          //addPostLoading
+          //}
         >
           짹짹
         </Button>
@@ -43,7 +49,11 @@ const EditPostForm = ({ post }) => {
               alt={v}
             />
             <div>
-              <Button onClick={onRemoveImage(i)}>
+              <Button
+              //</div>onClick={
+              //onRemoveImage(i)
+              //}
+              >
                 제거
               </Button>
             </div>
@@ -52,6 +62,10 @@ const EditPostForm = ({ post }) => {
       </div>
     </Form>
   );
+};
+
+EditPostForm.propTypes = {
+  post: PropTypes.object.isRequired,
 };
 
 export default EditPostForm;
