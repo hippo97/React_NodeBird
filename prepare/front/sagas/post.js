@@ -52,6 +52,7 @@ import {
 } from '../reducers/user';
 
 function addPostAPI(data) {
+  //console.log('add Post Data: ', data);
   return axios.post('/post', data);
 }
 
@@ -76,20 +77,26 @@ function* addPost(action) {
   }
 }
 
-function editPostAPI(data) {
-  return axios.put(`/post/edit/${data.postId}`, data);
+function editPostAPI(action) {
+  console.log(
+    'action.data: ',
+    action.data.getAll('content')
+  );
+  return axios.put(`/post/edit/${action.id}`, action.data);
 }
 
 function* editPost(action) {
   try {
-    const result = yield call(editPostAPI, action.data);
-
+    const result = yield call(editPostAPI, action);
+    console.log('result: ', result.data);
     yield put({
       type: EDIT_POST_SUCCESS,
       data: result.data,
     });
     console.log(action.data);
   } catch (err) {
+    console.log(err);
+    console.log(err.response.data);
     yield put({
       type: EDIT_POST_FAILURE,
       error: err.response.data,

@@ -265,14 +265,15 @@ router.post(
 router.put(
   '/edit/:postId',
   isLoggedIn,
+  upload.none(),
   async (req, res, next) => {
     try {
-      const postId = parseInt(req.params.id, 10);
-
+      const postId = parseInt(req.params.postId, 10);
+      console.log('postId: ', postId);
       const prevPost = await Post.findOne({
         where: { id: postId },
       });
-
+      console.log('req.body: ', req.body);
       const prevHashtags = Array.from(
         new Set(prevPost.content.match(/#[^\s#]+/g))
       ); //기존 게시글의 해시태그들을 가져온다.
@@ -293,7 +294,7 @@ router.put(
       }); //기존 게시글의 해시태그 중 모든 게시글에서 사용되지 않고 새로 등록된 게시글에도
       // 없다면, 해당 해시태그를 데이터베이스에서 삭제
 
-      if (hashtags) {
+      if (newHashtags) {
         const result = await Promise.all(
           hashtags.map((tag) =>
             Hashtag.findOrCreate({

@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 
 import useInput from '../hooks/useInput';
 import {
+  EDIT_POST_REQUEST,
   REMOVE_IMAGE,
   UPLOAD_IMAGES_REQUEST,
 } from '../reducers/post';
@@ -48,11 +49,30 @@ const EditPostForm = ({ post }) => {
     });
   });
 
+  const onSubmit = useCallback(() => {
+    if (!text || !text.trim()) {
+      return alert('게시글을 작성하세요.');
+    }
+
+    const formData = new FormData();
+    imagePaths.forEach((p) => {
+      formData.append('image', p);
+    });
+    formData.append('content', text);
+    console.log(text, imagePaths);
+    console.log(formData.getAll('content'));
+    return dispatch({
+      type: EDIT_POST_REQUEST,
+      data: formData,
+      id: post.id,
+    });
+  }, [text, imagePaths]);
+
   return (
     <Form
       style={{ margin: '10px 0 20px' }}
       encType="multipart/form-data"
-      //onFinish={onSubmit}
+      onFinish={onSubmit}
     >
       <Input.TextArea
         value={text}
