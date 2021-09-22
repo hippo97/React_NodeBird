@@ -54,11 +54,14 @@ const EditPostForm = ({ post }) => {
       return alert('게시글을 작성하세요.');
     }
 
+    const replaceText = text.replace(/(\n|\r\n)/g, '<br>');
+    //textArea 개행문자 처리
+
     const formData = new FormData();
     imagePaths.forEach((p) => {
       formData.append('image', p);
     });
-    formData.append('content', text);
+    formData.append('content', replaceText);
     console.log(text, imagePaths);
     console.log(formData.getAll('content'));
     return dispatch({

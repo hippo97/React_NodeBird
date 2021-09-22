@@ -8,9 +8,11 @@ import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import wrapper from '../store/configureStore';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const Home = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { me } = useSelector((state) => state.user);
   const {
     mainPosts,
@@ -21,6 +23,10 @@ const Home = () => {
   // const mainPosts = useSelector((state) => state.post.mainPosts);처럼 해도 됨
 
   useEffect(() => {
+    if (!me) {
+      router.push('/login');
+    }
+
     if (retweetError) {
       alert(retweetError);
     }

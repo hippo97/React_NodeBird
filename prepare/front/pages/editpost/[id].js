@@ -13,6 +13,9 @@ import EditPostForm from '../../Components/EditPostForm';
 
 const Editpost = () => {
   const { me } = useSelector((state) => state.user);
+  const { editPostDone } = useSelector(
+    (state) => state.post
+  );
   const router = useRouter();
   const { id } = router.query;
   const fetcher = (url) =>
@@ -32,12 +35,16 @@ const Editpost = () => {
     }
   }, [me && me.id]);
 
+  if (editPostDone) {
+    return Router.push(`/post/${id}`);
+  }
+
   if (postError) {
     console.error(postError);
     return <div>로딩 중 에러가 발생했습니다.</div>;
   }
   if (!postData) return <div>loading...</div>;
-  //console.log('postData: ', postData);
+  console.log('postData: ', postData);
   //console.log('postId: ', id);
   console.log('postData: ', postData);
   return (

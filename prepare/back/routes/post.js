@@ -296,13 +296,13 @@ router.put(
 
       if (newHashtags) {
         const result = await Promise.all(
-          hashtags.map((tag) =>
+          newHashtags.map((tag) =>
             Hashtag.findOrCreate({
               where: { name: tag.slice(1).toLowerCase() },
             })
           )
         );
-        await post.addHashtags(result.map((v) => v[0]));
+        await prevPost.addHashtags(result.map((v) => v[0]));
       } // 새로운 해시태그는 중복없이 등록
 
       if (req.body.image) {
@@ -313,20 +313,22 @@ router.put(
               Image.create({ src: image })
             )
           );
-          await post.addImages(images);
+          await prevPost.addImages(images);
         } else {
           // 이미지를 하나만 올리면 image: 1.jpg
           const image = await Image.create({
             src: req.body.image,
           });
-          await post.addImages(image);
+          await prevPost.addImages(image);
         }
       } //이미지는 기존 이미지 중 새 게시글에는 없는 이미지 해시태그처럼 삭제 안함(보관)
 
-      await Post.update({
+      await prevPost.update({
         content: req.body.content,
         UserId: req.user.id,
       });
+
+      res.status(201).json(prevPost);
     } catch (error) {
       console.error(error);
       next(error);

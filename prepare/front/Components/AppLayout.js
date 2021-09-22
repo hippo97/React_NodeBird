@@ -32,6 +32,10 @@ const SearchInput = styled(Input.Search)`
   vertical-align: middle;
 `;
 
+const Container = styled.div`
+  background-color: black;
+`;
+
 const AppLayout = ({ children }) => {
   const { me } = useSelector((state) => state.user);
   const [searchInput, onChangeSearchInput] = useInput('');
@@ -40,7 +44,7 @@ const AppLayout = ({ children }) => {
     Router.push(`/hashtag/${searchInput}`);
   }, [searchInput]);
   return (
-    <div>
+    <Container>
       <Menu mode="horizontal">
         <Menu.Item>
           <Link href="/">
@@ -69,7 +73,7 @@ const AppLayout = ({ children }) => {
 
       <Row gutter={8}>
         <Col xs={24} md={6}>
-          {me ? <UserProfile /> : <LoginForm />}
+          {me ? <UserProfile /> : null}
         </Col>
         <Col xs={24} md={12}>
           {children}
@@ -79,12 +83,10 @@ const AppLayout = ({ children }) => {
             href="#"
             target="_blank"
             rel="_noreferrer noopener"
-          >
-            Made by Dochi
-          </a>
+          ></a>
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 };
 
