@@ -3,8 +3,11 @@ import { Form, Input, Button } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+
+import img from '../assets/images/dochi.jpg';
 import { loginRequestAction } from '../reducers/user';
 import useInput from '../hooks/useInput';
+import { useRouter } from 'next/router';
 
 const ButtonWrapper = styled.div``;
 
@@ -30,6 +33,8 @@ const Container = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: black;
@@ -46,12 +51,23 @@ const InputWrapper = styled.div`
   color: black;
 `;
 
+const Image = styled.div`
+  background-image: url(${img});
+  width: 100%;
+  max-width: 320px;
+  height: 320px;
+  background-size: cover;
+  border-radius: 50%;
+  background-position: center center;
+  margin-bottom: 20px;
+`;
+
 const LoginForm = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
-  const { logInLoading, logInError } = useSelector(
-    (state) => state.user
-  );
+  const { logInLoading, logInError, logInDone } =
+    useSelector((state) => state.user);
 
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
@@ -59,6 +75,9 @@ const LoginForm = () => {
   useEffect(() => {
     if (logInError) {
       alert(logInError);
+    }
+    if (logInDone) {
+      router.push('/');
     }
   }, [logInError]);
 
@@ -69,6 +88,7 @@ const LoginForm = () => {
 
   return (
     <Container>
+      <Image />
       <FormWrapper onFinish={onSubmitForm}>
         <InputWrapper>
           <Input
@@ -93,7 +113,9 @@ const LoginForm = () => {
           />
         </InputWrapper>
         <ButtonWrapper>
-          <SButton loading={logInLoading}>로그인</SButton>
+          <SButton htmlType="submit" loading={logInLoading}>
+            로그인
+          </SButton>
           <Link href="/signup">
             <a>
               <SButton>회원가입</SButton>

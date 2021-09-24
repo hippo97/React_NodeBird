@@ -33,7 +33,7 @@ const SearchInput = styled(Input.Search)`
 `;
 
 const Container = styled.div`
-  background-color: black;
+  background-color: white;
 `;
 
 const AppLayout = ({ children }) => {
