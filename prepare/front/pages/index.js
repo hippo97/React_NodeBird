@@ -22,6 +22,8 @@ const SearchWrapper = styled.div`
 const CountTwitSpan = styled.span`
   vertical-align: middle;
   padding-left: 5px;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 900;
 `;
 
 const SearchInput = styled(Input.Search)`
