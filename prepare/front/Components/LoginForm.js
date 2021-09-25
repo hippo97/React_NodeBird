@@ -79,7 +79,7 @@ const LoginForm = () => {
     if (logInDone) {
       router.push('/');
     }
-  }, [logInError]);
+  }, [logInError, logInDone]);
 
   const onSubmitForm = useCallback(() => {
     console.log(email, password);

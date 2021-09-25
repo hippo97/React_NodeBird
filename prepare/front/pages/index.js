@@ -1,14 +1,35 @@
 import { END } from 'redux-saga';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import axios from 'axios';
+import { Router, useRouter } from 'next/router';
+import { Input } from 'antd';
+import useInput from '../hooks/useInput';
+import { LOAD_POSTS_REQUEST } from '../reducers/post';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
+
 import AppLayout from '../Components/AppLayout';
 import PostCard from '../Components/PostCard';
 import PostForm from '../Components/PostForm';
-import { LOAD_POSTS_REQUEST } from '../reducers/post';
-import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import wrapper from '../store/configureStore';
-import axios from 'axios';
-import { useRouter } from 'next/router';
+
+const SearchWrapper = styled.div`
+  height: 70px;
+  padding-top: 25px;
+`;
+
+const CountTwitSpan = styled.span`
+  vertical-align: middle;
+  padding-left: 5px;
+`;
+
+const SearchInput = styled(Input.Search)`
+  vertical-align: middle;
+  width: 250px;
+  float: right;
+  border-radius: 10px;
+`;
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -22,6 +43,12 @@ const Home = () => {
   } = useSelector((state) => state.post);
   // const mainPosts = useSelector((state) => state.post.mainPosts);처럼 해도 됨
 
+  const [searchInput, onChangeSearchInput] = useInput('');
+
+  const onSearch = useCallback(() => {
+    Router.push(`/hashtag/${searchInput}`);
+  }, [searchInput]);
+
   useEffect(() => {
     if (!me) {
       router.push('/login');
@@ -30,7 +57,7 @@ const Home = () => {
     if (retweetError) {
       alert(retweetError);
     }
-  }, [retweetError]);
+  }, [retweetError, me]);
 
   useEffect(() => {
     function onScroll() {
@@ -65,6 +92,18 @@ const Home = () => {
 
   return (
     <AppLayout>
+      <SearchWrapper>
+        <CountTwitSpan>
+          전체 트윗(
+          {me.Posts.length})
+        </CountTwitSpan>
+        <SearchInput
+          enterButton
+          value={searchInput}
+          onChange={onChangeSearchInput}
+          onSearch={onSearch}
+        />
+      </SearchWrapper>
       {me && <PostForm />}
       {mainPosts.map((post) => (
         <PostCard key={post.id} post={post} />
