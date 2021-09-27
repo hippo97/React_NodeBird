@@ -198,25 +198,25 @@ const LeftSideNavigation = () => {
             <MenuImage>
               <Link href="/">
                 <a>
-                  <IconTwitterContainer
-                    icon={faTwitter}
-                  ></IconTwitterContainer>
+                  <IconTwitterContainer icon={faTwitter} />
                 </a>
               </Link>
             </MenuImage>
             <MenuNav>
               <MenuList href="/">
                 <a>
-                  <IconContainer
-                    icon={faHome}
-                  ></IconContainer>
+                  <div>
+                    <IconContainer icon={faHome} />
+                    <IconText>홈</IconText>
+                  </div>
                 </a>
-                <IconText>홈</IconText>
               </MenuList>
-              <MenuList to="/profile">
+              <MenuList href="/profile">
                 <a>
-                  <IconContainer icon={faUser} />
-                  <IconText>프로필</IconText>
+                  <div>
+                    <IconContainer icon={faUser} />
+                    <IconText>프로필</IconText>
+                  </div>
                 </a>
               </MenuList>
               <MenuListSpan onClick={onFocusTwitterSearch}>
@@ -250,20 +250,22 @@ const LeftSideNavigation = () => {
             href={me === null ? '/' : '/profile'}
           >
             <a>
-              <UserContainer>
-                <UserPhoto />
-                <UserInfo>
-                  <UserName>
-                    {me?.nickname ? me.nickname : '유저'}
-                  </UserName>
-                  <UserEmail>
-                    {me?.id ? me.id : '로그인 안됨'}
-                  </UserEmail>
-                </UserInfo>
-                <IconUserEtcContainer
-                  icon={faEllipsisH}
-                ></IconUserEtcContainer>
-              </UserContainer>
+              <div>
+                <UserContainer>
+                  <UserPhoto />
+                  <UserInfo>
+                    <UserName>
+                      {me?.nickname ? me.nickname : '유저'}
+                    </UserName>
+                    <UserEmail>
+                      {me?.id ? me.id : '로그인 안됨'}
+                    </UserEmail>
+                  </UserInfo>
+                  <IconUserEtcContainer
+                    icon={faEllipsisH}
+                  />
+                </UserContainer>
+              </div>
             </a>
           </UserContainerLink>
         </LeftContainer>
