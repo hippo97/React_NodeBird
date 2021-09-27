@@ -53,7 +53,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!me) {
-      router.push('/login');
+      router.replace('/login');
     }
 
     if (retweetError) {
@@ -97,7 +97,7 @@ const Home = () => {
       <SearchWrapper>
         <CountTwitSpan>
           전체 트윗(
-          {me.Posts.length})
+          {me && me.Posts.length})
         </CountTwitSpan>
         <SearchInput
           enterButton

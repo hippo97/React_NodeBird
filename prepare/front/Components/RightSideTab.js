@@ -2,13 +2,19 @@ import React from 'react';
 import { Button, Col, Menu, Row } from 'antd';
 import styled from 'styled-components';
 
+const Container = styled.div`
+  padding-left: 0px;
+  padding-right: 0px;
+
+  border: solid 1px;
+`;
 const TrandWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100px;
   border: solid 1px;
-  margin: 20px 10px 20px 10px;
+  margin: 20px 10px;
 `;
 
 const FollowWrapper = styled.div`
@@ -22,7 +28,7 @@ const FollowWrapper = styled.div`
 
 const RightSideTab = () => {
   return (
-    <>
+    <Container>
       <Menu>
         <Menu.Item>
           <Button
@@ -56,7 +62,7 @@ const RightSideTab = () => {
           <FollowWrapper>팔로우 목록</FollowWrapper>
         </Col>
       </Row>
-    </>
+    </Container>
   );
 };
 

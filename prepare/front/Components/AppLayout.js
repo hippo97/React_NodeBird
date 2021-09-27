@@ -17,13 +17,13 @@ const AppLayout = ({ children }) => {
   return (
     <Container>
       <Row gutter={8}>
-        <Col xs={24} md={6}>
+        <Col xs={24} md={6} style={{ padding: '0' }}>
           <LeftSideNavigation />
         </Col>
-        <Col xs={24} md={12}>
+        <Col xs={24} md={12} style={{ padding: '0' }}>
           {children}
         </Col>
-        <Col xs={24} md={6}>
+        <Col xs={24} md={6} style={{ padding: '0' }}>
           <RightSideTab />
         </Col>
       </Row>
