@@ -12,10 +12,10 @@
 - Following, Follower 등록 및 차단
 - Image Carousel
 - HashTag 등록 및 검색
+- 게시글 수정
 
 **추가로 구현할 부분:**
 
-- 게시글 수정
 - 이미지 Zoom 수정(사진 크기 깨짐)
 - passport로 소셜 로그인 구현
 
