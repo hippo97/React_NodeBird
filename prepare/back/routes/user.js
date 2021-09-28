@@ -60,7 +60,7 @@ router.get(
           .send('존재하지 않는 사람입니다(팔로우 실패).');
       }
       const followers = await user.getFollowers({
-        limit: req.query.limit,
+        limit: parseInt(req.query.limit, 10),
       });
       res.status(200).json(followers);
     } catch (error) {
@@ -86,7 +86,7 @@ router.get(
       }
 
       const followings = await user.getFollowings({
-        limit: req.query.limit,
+        limit: parseInt(req.query.limit, 10),
       });
       res.status(200).json(followings);
     } catch (error) {

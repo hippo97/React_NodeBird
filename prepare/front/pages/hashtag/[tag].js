@@ -21,6 +21,9 @@ const Hashtag = () => {
     useSelector((state) => state.post);
 
   useEffect(() => {
+    if (!tag) {
+      router.back();
+    }
     const onScroll = () => {
       if (
         window.pageYOffset +

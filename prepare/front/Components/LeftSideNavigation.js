@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import { Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 import {
@@ -20,12 +19,12 @@ import { useSelector } from 'react-redux';
 
 const Container = styled.div`
   width: 100%;
-  margin: 0px;
+  margin: 0px 0px;
   padding: 0px;
 `;
 
 const LeftContainerParent = styled.div`
-  width: 280px;
+  width: 250px;
   @media (max-width: 768px) {
     display: none;
   }
@@ -38,7 +37,6 @@ const LeftContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   position: fixed;
-  padding-right: 20px;
   box-sizing: border-box;
   padding-top: 5px;
   padding-bottom: 15px;
@@ -50,18 +48,8 @@ const MenuContainer = styled.div``;
 const MenuImage = styled.div`
   margin-left: 5px;
   margin-bottom: 15px;
+  width: 30px;
   display: inline-block;
-`;
-
-const IconTwitterContainer = styled(FontAwesomeIcon)`
-  font-size: 30px;
-  color: var(--twitter-color);
-  cursor: pointer;
-  border-radius: 50%;
-  padding: 10px;
-  &:hover {
-    background-color: #e6f3ff;
-  }
 `;
 
 const MenuNav = styled.ul``;
@@ -198,7 +186,7 @@ const LeftSideNavigation = () => {
             <MenuImage>
               <Link href="/">
                 <a>
-                  <IconTwitterContainer icon={faTwitter} />
+                  <IconContainer icon={faTwitter} />
                 </a>
               </Link>
             </MenuImage>

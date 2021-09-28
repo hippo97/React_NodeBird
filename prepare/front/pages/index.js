@@ -33,6 +33,18 @@ const SearchInput = styled(Input.Search)`
   border-radius: 10px;
 `;
 
+const PostWrapper = styled.div``;
+const CenterContents = styled.div`
+  width: 100%;
+`;
+
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+`;
+
 const Home = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -48,7 +60,7 @@ const Home = () => {
   const [searchInput, onChangeSearchInput] = useInput('');
 
   const onSearch = useCallback(() => {
-    Router.push(`/hashtag/${searchInput}`);
+    router.push(`/hashtag/${searchInput}`);
   }, [searchInput]);
 
   useEffect(() => {
@@ -94,22 +106,28 @@ const Home = () => {
 
   return (
     <AppLayout>
-      <SearchWrapper>
-        <CountTwitSpan>
-          전체 트윗(
-          {me && me.Posts.length})
-        </CountTwitSpan>
-        <SearchInput
-          enterButton
-          value={searchInput}
-          onChange={onChangeSearchInput}
-          onSearch={onSearch}
-        />
-      </SearchWrapper>
-      {me && <PostForm />}
-      {mainPosts.map((post) => (
-        <PostCard key={post.id} post={post} />
-      ))}
+      <Container>
+        <CenterContents>
+          <SearchWrapper>
+            <CountTwitSpan>
+              전체 트윗(
+              {me && me.Posts.length})
+            </CountTwitSpan>
+            <SearchInput
+              enterButton
+              value={searchInput}
+              onChange={onChangeSearchInput}
+              onSearch={onSearch}
+            />
+          </SearchWrapper>
+          <PostWrapper>
+            {me && <PostForm />}
+            {mainPosts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </PostWrapper>
+        </CenterContents>
+      </Container>
     </AppLayout>
   );
 };

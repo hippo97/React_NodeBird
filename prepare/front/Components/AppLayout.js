@@ -17,15 +17,17 @@ const AppLayout = ({ children }) => {
   return (
     <Container>
       <Row gutter={8}>
-        <Col xs={24} md={6} style={{ padding: '0' }}>
+        <Col xs={12} md={3} />
+        <Col xs={14} md={4} style={{ padding: '0' }}>
           <LeftSideNavigation />
         </Col>
-        <Col xs={24} md={12} style={{ padding: '0' }}>
+        <Col xs={20} md={10} style={{ padding: '0' }}>
           {children}
         </Col>
-        <Col xs={24} md={6} style={{ padding: '0' }}>
+        <Col xs={14} md={4} style={{ padding: '0' }}>
           <RightSideTab />
         </Col>
+        <Col xs={12} md={3} />
       </Row>
     </Container>
   );
