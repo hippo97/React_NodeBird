@@ -42,8 +42,8 @@
 
 
 **Login Page**  
-<img src='./prepare/screenshot/login.PNG' width="50%" height="50%" />
+<img src='./prepare/screenshot/login.PNG' width="70%" height="70%" />
 
 
 **Index Page**  
-<img src='./prepare/screenshot/index.PNG' width="50%" height="50%" />
+<img src='./prepare/screenshot/index.PNG' width="70%" height="70%" />
