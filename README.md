@@ -42,8 +42,8 @@
 
 
 **Login Page**  
-![login_screensh](./prepare/screenshot/login.PNG){: width="200" height="150"}
+<img src='./prepare/screenshot/login.PNG' width="200" height="150" />
 
 
 **Index Page**  
-![index_screensh](./prepare/screenshot/index.PNG){: width="200" height="150"}
+<img src='./prepare/screenshot/index.PNG' width="200" height="150" />
