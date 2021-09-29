@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import LeftSideNavigation from './LeftSideNavigation';
 import RightSideTab from './RightSideTab';
+import { useRef } from 'react';
 
 const Container = styled.div`
   background-color: white;
@@ -13,46 +14,44 @@ const Container = styled.div`
   padding: 0;
 `;
 
-const AppLayout = ({ children }) => {
+const AppLayout = ({ children, twitterSearch }) => {
   const { me } = useSelector((state) => state.user);
 
   return (
     <Container>
-      <Row gutter={8}>
+      <Row gutter={8} style={{ margin: 0 }}>
         <Col
           xs={12}
           md={3}
           style={{
             padding: '0',
-            border: '1px solid green',
           }}
         />
         <Col
-          xs={14}
-          md={4}
+          xs={15}
+          md={5}
           style={{
             padding: '0',
-            border: '1px solid purple',
           }}
         >
-          <LeftSideNavigation />
+          <LeftSideNavigation
+            twitterSearch={twitterSearch}
+          />
         </Col>
         <Col
-          xs={20}
-          md={10}
+          xs={18}
+          md={8}
           style={{
             padding: '0',
-            border: '1px solid red',
           }}
         >
           {children}
         </Col>
         <Col
-          xs={14}
-          md={4}
+          xs={15}
+          md={5}
           style={{
             padding: '0',
-            border: '1px solid yellow',
           }}
         >
           <RightSideTab />
@@ -62,7 +61,6 @@ const AppLayout = ({ children }) => {
           md={3}
           style={{
             padding: '0',
-            border: '1px solid blue',
           }}
         />
       </Row>

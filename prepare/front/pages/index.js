@@ -1,10 +1,15 @@
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+} from 'react';
 import { END } from 'redux-saga';
-import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/router';
-import { Input } from 'antd';
 import useInput from '../hooks/useInput';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
@@ -17,20 +22,48 @@ import wrapper from '../store/configureStore';
 const SearchWrapper = styled.div`
   height: 70px;
   padding-top: 25px;
+
+  display: flex;
+  justify-content: space-between;
 `;
 
 const CountTwitSpan = styled.span`
   vertical-align: middle;
   padding-left: 5px;
   font-family: 'Segoe UI', sans-serif;
+  font-size: 28px;
   font-weight: 900;
 `;
 
-const SearchInput = styled(Input.Search)`
+const SearchInput = styled.input`
   vertical-align: middle;
   width: 250px;
   float: right;
-  border-radius: 10px;
+  border-radius: 30px;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 15px;
+  border: 1px solid transparent;
+  background-color: #f8f8f8;
+  padding: 10px 12px;
+  padding-left: 50px;
+  padding-right: 30px;
+  color: #989898;
+  font-size: 15px;
+
+  &:focus {
+    border: 1px solid #00aff0;
+    background-color: #f8f8f8;
+  }
+
+  &::placeholder {
+    color: #989898;
+  }
+
+  @media (max-width: 768px) {
+    width: 130px;
+  }
 `;
 
 const PostWrapper = styled.div``;
@@ -43,12 +76,35 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   margin: 0 auto;
-  border: 1px solid gray;
+`;
+
+const IconContentFormContainer = styled(FontAwesomeIcon)`
+  font-size: 15px;
+  cursor: pointer;
+  color: black;
+  position: absolute;
+  top: 50%;
+  left: 22px;
+  transform: translateY(-50%);
+`;
+
+const SearchForm = styled.form`
+  position: relative;
+`;
+
+const SearchContent = styled.div`
+  display: inline-box;
+`;
+
+const CountTwitWrapper = styled.div`
+  float: left;
 `;
 
 const Home = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const twitterSearch = useRef();
+
   const { me } = useSelector((state) => state.user);
   const {
     mainPosts,
@@ -106,20 +162,29 @@ const Home = () => {
   }, [hasMorePosts, loadPostsLoading, mainPosts]);
 
   return (
-    <AppLayout>
+    <AppLayout twitterSearch={twitterSearch}>
       <Container>
         <CenterContents>
           <SearchWrapper>
-            <CountTwitSpan>
-              전체 트윗(
-              {me && me.Posts.length})
-            </CountTwitSpan>
-            <SearchInput
-              enterButton
-              value={searchInput}
-              onChange={onChangeSearchInput}
-              onSearch={onSearch}
-            />
+            <CountTwitWrapper>
+              <CountTwitSpan>
+                전체 트윗(
+                {me && me.Posts.length})
+              </CountTwitSpan>
+            </CountTwitWrapper>
+            <SearchContent>
+              <SearchForm onSubmit={onSearch}>
+                <SearchInput
+                  enterButton
+                  type="text"
+                  placeholder="트위터 검색"
+                  value={searchInput}
+                  onChange={onChangeSearchInput}
+                  ref={twitterSearch}
+                />
+                <IconContentFormContainer icon={faSearch} />
+              </SearchForm>
+            </SearchContent>
           </SearchWrapper>
           <PostWrapper>
             {me && <PostForm />}

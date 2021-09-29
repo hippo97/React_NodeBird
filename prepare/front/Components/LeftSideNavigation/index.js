@@ -19,12 +19,12 @@ import {
   Container,
   LeftContainerParent,
   LeftContainer,
-  IconTwitterContainer,
+  LinkItem,
   IconUserEtcContainer,
   IconContainer,
   IconText,
+  MenuHome,
   MenuContainer,
-  MenuImage,
   MenuNav,
   MenuListSpan,
   MenuButton,
@@ -37,9 +37,8 @@ import {
 } from './styles';
 import userImage from '../../assets/images/user.png';
 
-const LeftSideNavigation = () => {
+const LeftSideNavigation = ({ twitterSearch }) => {
   const { me } = useSelector((state) => state.user);
-  const twitterSearch = useRef();
 
   const onFocusTwitterSearch = (event) => {
     twitterSearch.current.focus();
@@ -61,25 +60,21 @@ const LeftSideNavigation = () => {
               </Link>
             </MenuImage> */}
             <MenuNav>
-              <MenuListSpan
-                style={{ fontSize: 30, color: '#1da1f2' }}
-              >
-                Dwitter
-              </MenuListSpan>
+              <MenuHome>Dwitter</MenuHome>
               <MenuListSpan>
                 <Link href="/">
-                  <a>
+                  <LinkItem>
                     <IconContainer icon={faHome} />
                     <IconText>홈</IconText>
-                  </a>
+                  </LinkItem>
                 </Link>
               </MenuListSpan>
               <MenuListSpan>
                 <Link href="/profile">
-                  <a>
+                  <LinkItem>
                     <IconContainer icon={faUser} />
                     <IconText>프로필</IconText>
-                  </a>
+                  </LinkItem>
                 </Link>
               </MenuListSpan>
               <MenuListSpan onClick={onFocusTwitterSearch}>

@@ -4,12 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const Container = styled.div`
   width: 100%;
-  margin: 0px 0px;
+  margin: 0px 70px 0px;
   padding: 0px;
+  padding-left: 30px;
+  border-right: 1px solid red;
 `;
 
 export const LeftContainerParent = styled.div`
-  width: 250px;
+  width: 280px;
   @media (max-width: 768px) {
     display: none;
   }
@@ -25,7 +27,10 @@ export const LeftContainer = styled.div`
   box-sizing: border-box;
   padding-top: 5px;
   padding-bottom: 15px;
-  border-right: 1px solid #eee;
+`;
+
+export const LinkItem = styled.a`
+  color: black;
 `;
 
 export const IconTwitterContainer = styled(FontAwesomeIcon)`
@@ -50,7 +55,7 @@ export const IconUserEtcContainer = styled(FontAwesomeIcon)`
   flex: 1;
   font-size: 18px;
   cursor: pointer;
-  padding-right: 10px;
+  padding-right: 0px;
 `;
 
 export const IconText = styled.span`
@@ -71,8 +76,30 @@ export const MenuNav = styled.ul`
   width: 100%;
 `;
 
+export const MenuHome = styled.span`
+  display: inline-block;
+  margin-right: 50px;
+  align-items: center;
+  padding: 12px 15px;
+  padding-right: 25px;
+  border-radius: 50px;
+  box-sizing: border-box;
+  font-size: 34px;
+  margin-top: 5px;
+  color: #1da1f2;
+  cursor: pointer;
+  &:link {
+    color: inherit;
+  }
+  &:visited {
+    color: inherit;
+  }
+  &:hover {
+    background-color: #eeeeee;
+  }
+`;
+
 export const MenuListSpan = styled.span`
-  margin-bottom: 8px;
   display: inline-block;
   margin-right: 50px;
   align-items: center;
@@ -95,6 +122,7 @@ export const MenuListSpan = styled.span`
 export const MenuList = styled(Link)`
   margin-bottom: 8px;
   display: inline-block;
+  margin-right: 50px;
   align-items: center;
   padding: 12px 15px;
   padding-right: 25px;
@@ -114,8 +142,8 @@ export const MenuList = styled(Link)`
 
 export const MenuButton = styled.button`
   margin-top: 15px;
-  padding: 17px 40px;
-  margin-left: 50px;
+  padding: 17px 70px;
+  margin-left: 40px;
   background-color: #1da1f2;
   color: white;
   border-radius: 30px;
@@ -136,6 +164,7 @@ export const UserContainer = styled.div`
   align-items: center;
   border-radius: 50px;
   padding: 8px 10px;
+  margin-left: 40px;
   cursor: pointer;
   &:hover {
     background-color: #eeeeee;

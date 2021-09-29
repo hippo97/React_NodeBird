@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Button } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -62,6 +62,13 @@ const Image = styled.div`
   margin-bottom: 20px;
 `;
 
+const SInput = styled.input`
+  border: none;
+  outline: none;
+  padding: 0px 30px;
+  font-size: 20px;
+`;
+
 const LoginForm = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -91,24 +98,20 @@ const LoginForm = () => {
       <Image />
       <FormWrapper onFinish={onSubmitForm}>
         <InputWrapper>
-          <Input
-            name="user-email"
+          <SInput
             value={email}
             placeholder="Email"
-            type="email"
+            type="text"
             onChange={onChangeEmail}
-            bordered={false}
             required
           />
         </InputWrapper>
         <InputWrapper>
-          <Input
-            name="user-password"
+          <SInput
             type="password"
             value={password}
             placeholder="Password"
             onChange={onChangePassword}
-            bordered={false}
             required
           />
         </InputWrapper>
