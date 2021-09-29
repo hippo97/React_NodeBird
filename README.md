@@ -40,4 +40,4 @@
 
 > Image
 
-![login_screensh](./screenshot/login.png)
+![login_screensh](./prepare/screenshot/login.png)
