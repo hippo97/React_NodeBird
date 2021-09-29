@@ -56,7 +56,7 @@ const Post = () => {
 
 export const getServerSideProps =
   wrapper.getServerSideProps(async (context) => {
-    console.log(context.req.headers);
+    //console.log(context.req.headers);
     const cookie = context.req
       ? context.req.headers.cookie
       : '';

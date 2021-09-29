@@ -44,9 +44,9 @@ const Editpost = () => {
     return <div>로딩 중 에러가 발생했습니다.</div>;
   }
   if (!postData) return <div>loading...</div>;
-  console.log('postData: ', postData);
+  //console.log('postData: ', postData);
   //console.log('postId: ', id);
-  console.log('postData: ', postData);
+  //console.log('postData: ', postData);
   return (
     <>
       <Head>
@@ -61,7 +61,7 @@ const Editpost = () => {
 
 export const getServerSideProps =
   wrapper.getServerSideProps(async (context) => {
-    console.log('getServerSideProps start');
+    //console.log('getServerSideProps start');
     //console.log(context.req.headers);
     const cookie = context.req
       ? context.req.headers.cookie
@@ -74,7 +74,7 @@ export const getServerSideProps =
       type: LOAD_MY_INFO_REQUEST,
     });
     context.store.dispatch(END);
-    console.log('getServerSideProps end');
+    //console.log('getServerSideProps end');
     await context.store.sagaTask.toPromise();
   });
 

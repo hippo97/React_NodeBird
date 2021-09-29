@@ -78,22 +78,19 @@ function* addPost(action) {
 }
 
 function editPostAPI(action) {
-  console.log(
-    'action.data: ',
-    action.data.getAll('content')
-  );
+  //console.log('action.data: ', action.data.getAll('content'));
   return axios.put(`/post/edit/${action.id}`, action.data);
 }
 
 function* editPost(action) {
   try {
     const result = yield call(editPostAPI, action);
-    console.log('result: ', result.data);
+    //console.log('result: ', result.data);
     yield put({
       type: EDIT_POST_SUCCESS,
       data: result.data,
     });
-    console.log(action.data);
+    //console.log(action.data);
   } catch (err) {
     console.log(err);
     console.log(err.response.data);
@@ -178,7 +175,7 @@ function* loadPosts(action) {
       type: LOAD_POSTS_SUCCESS,
       data: result.data,
     });
-    console.log(action.data);
+    //console.log(action.data);
   } catch (err) {
     console.error(err);
     yield put({
@@ -278,7 +275,7 @@ function* removePost(action) {
       type: REMOVE_POST_OF_ME,
       data: action.data,
     });
-    console.log(action.data);
+    //console.log(action.data);
   } catch (err) {
     yield put({
       type: REMOVE_POST_FAILURE,

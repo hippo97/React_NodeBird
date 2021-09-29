@@ -3,7 +3,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import axios from 'axios';
-import { Router, useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { Input } from 'antd';
 import useInput from '../hooks/useInput';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
@@ -43,6 +43,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   margin: 0 auto;
+  border: 1px solid gray;
 `;
 
 const Home = () => {
@@ -134,8 +135,8 @@ const Home = () => {
 
 export const getServerSideProps =
   wrapper.getServerSideProps(async (context) => {
-    console.log('getServerSideProps start');
-    console.log(context.req.headers);
+    //console.log('getServerSideProps start');
+    //console.log(context.req.headers);
     const cookie = context.req
       ? context.req.headers.cookie
       : '';
@@ -150,7 +151,7 @@ export const getServerSideProps =
       type: LOAD_POSTS_REQUEST,
     });
     context.store.dispatch(END);
-    console.log('getServerSideProps end');
+    //console.log('getServerSideProps end');
     await context.store.sagaTask.toPromise();
   });
 
