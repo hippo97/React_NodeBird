@@ -38,6 +38,6 @@
 
 - My-SQL
 
-> Image
+> ScreenShot
 
-![login_screensh](./prepare/screenshot/login.png)
+![login_screensh](./prepare/screenshot/login.PNG)
