@@ -40,4 +40,10 @@
 
 > ScreenShot
 
+
+**Login Page**  
 ![login_screensh](./prepare/screenshot/login.PNG 'Login')
+
+
+**Index Page**  
+![index_screensh](./prepare/screenshot/index.PNG 'Index')
