@@ -41,9 +41,11 @@
 > ScreenShot
 
 
-**Login Page**  
+#Login Page
+## 로그인 하지 않은 사용자는 자동으로 login페이지로 이동.  
 <img src='./prepare/screenshot/login.PNG' width="70%" height="70%" />
 
 
-**Index Page**  
+#Index Page  
+## 로그인 완료한 사용자에게 보이는 화면.  트윗을 볼 수 있고,  트윗을 쓸 수 있고,  내가 쓴 트윗 수정,  댓글작성
 <img src='./prepare/screenshot/index.PNG' width="70%" height="70%" />
