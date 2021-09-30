@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import LeftSideNavigation from './LeftSideNavigation';
 import RightSideTab from './RightSideTab';
-import { useRef } from 'react';
 
 const Container = styled.div`
   background-color: white;
@@ -70,6 +69,7 @@ const AppLayout = ({ children, twitterSearch }) => {
 
 AppLayout.propTypes = {
   children: PropTypes.node.isRequired,
+  twitterSearch: PropTypes.object.isRequired,
 };
 
 export default AppLayout;

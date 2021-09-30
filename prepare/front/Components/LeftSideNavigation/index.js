@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 import {
   faEnvelope,
