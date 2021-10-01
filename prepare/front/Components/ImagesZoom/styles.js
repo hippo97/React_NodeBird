@@ -1,7 +1,7 @@
 import styled, {
   createGlobalStyle,
 } from 'styled-components';
-import { CloseOutlined } from '@ant-design/icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const Overlay = styled.div`
   position: fixed;
@@ -14,7 +14,7 @@ export const Overlay = styled.div`
 
 export const Header = styled.header`
   height: 44px;
-  background: white;
+  background: rgba(0, 0, 0, 0.5);
   position: relative;
   padding: 0;
   text-align: center;
@@ -27,24 +27,29 @@ export const Header = styled.header`
   }
 `;
 
-export const CloseBtn = styled(CloseOutlined)`
+export const CloseIcon = styled(FontAwesomeIcon)`
+  font-size: 34px;
+`;
+
+export const CloseBtn = styled.button`
   position: absolute;
   right: 0;
   top: 0;
-  padding: 15px;
   line-height: 14px;
   cursor: pointer;
+  background: rgba(0, 0, 0, 0);
+  border: none;
+  margin: 20px;
 `;
 
 export const SlickWrapper = styled.div`
   height: calc(100% - 44px);
-  background: #090909;
+  background: rgba(0, 0, 0, 0.5);
 `;
 
 export const ImgWrapper = styled.div`
   padding: 32px;
   text-align: center;
-
   &img {
     margin: 0 auto;
     max-height: 750px;

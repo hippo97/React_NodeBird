@@ -13,7 +13,6 @@ import {
   FollowInfoDesc,
   FollowInfoTitle,
   FollowItem,
-  FollowMoreContent,
   FollowWrapper,
   IconTrandContainer,
   LogOutButton,
@@ -33,7 +32,7 @@ import {
   TrandWrapper,
 } from './styles';
 import { logoutRequestAction } from '../../reducers/user';
-import amazonLogo from '../../assets/images/amazon-logo.png';
+import naverLogo from '../../assets/images/naver-logo.png';
 import appleLogo from '../../assets/images/apple-logo.png';
 import facebookLogo from '../../assets/images/facebook-logo.png';
 import googleLogo from '../../assets/images/google-logo.png';
@@ -86,13 +85,13 @@ const RightSideTab = () => {
                 <TrandItem>
                   <TrandHeader>
                     <TrandHeaderContent>
-                      구글, 아마존에서 트랜드 중
+                      구글, 네이버에서 트랜드 중
                     </TrandHeaderContent>
                     <IconTrandContainer icon={faCog} />
                   </TrandHeader>
                   <TrandContent>
                     <TrandContentText>
-                      Go, AWS
+                      Go, AI, React
                     </TrandContentText>
                   </TrandContent>
                 </TrandItem>
@@ -112,10 +111,10 @@ const RightSideTab = () => {
             <FollowHeader>팔로우 추천</FollowHeader>
             <FollowContent>
               <FollowItem>
-                <FollowImage src={amazonLogo} />
+                <FollowImage src={naverLogo} />
                 <FollowInfo>
-                  <FollowInfoTitle>Amazon</FollowInfoTitle>
-                  <FollowInfoDesc>@Amazon</FollowInfoDesc>
+                  <FollowInfoTitle>Naver</FollowInfoTitle>
+                  <FollowInfoDesc>@Naver</FollowInfoDesc>
                 </FollowInfo>
                 <FollowButton>팔로우</FollowButton>
               </FollowItem>

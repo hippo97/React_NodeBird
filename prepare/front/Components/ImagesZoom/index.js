@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Slick from 'react-slick';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import {
   CloseBtn,
+  CloseIcon,
   Global,
   Header,
   ImgWrapper,
@@ -17,8 +19,9 @@ const ImagesZoom = ({ images, onClose }) => {
     <Overlay>
       <Global />
       <Header>
-        <h1>상세 이미지</h1>
-        <CloseBtn onClick={onClose}>X</CloseBtn>
+        <CloseBtn onClick={onClose}>
+          <CloseIcon icon={faTimesCircle} />
+        </CloseBtn>
       </Header>
       <SlickWrapper>
         <div>
@@ -35,6 +38,8 @@ const ImagesZoom = ({ images, onClose }) => {
                 <img
                   src={`http://localhost:3065/${v.src}`}
                   alt={v.src}
+                  width="60%"
+                  height="60%"
                 />
               </ImgWrapper>
             ))}
